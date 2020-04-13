@@ -1,2 +1,1 @@
-# destination-nowwanus
-Destination: Nowwanus
+# Destination: Nowwanus
