@@ -1,0 +1,73 @@
+[
+  {
+    "asteroidleft": 1,
+    "target": 200
+  },
+  {
+    "asteroidleft": 2,
+    "target": 500
+  },
+  {
+    "asteroiddown": 1,
+    "target": 300
+  },
+  {
+    "asteroiddown": 1,
+    "asteroidleft": 1,
+    "target": 600
+  },
+  {
+    "asteroiddown": 1,
+    "asteroidleft": 2,
+    "target": 900
+  },
+  {
+    "asteroidleft": 3,
+    "target": 1000
+  },
+  {
+    "asteroiddown": 2,
+    "asteroidleft": 1,
+    "target": 1100
+  },
+  {
+    "asteroiddown": 3,
+    "target": 1200
+  },
+  {
+    "asteroiddown": 1,
+    "asteroidleft": 1,
+    "asteroidup": 1,
+    "target": 1300
+  },
+  {
+    "asteroiddown": 1,
+    "asteroidleft": 2,
+    "asteroidup": 1,
+    "target": 1600
+  },
+  {
+    "asteroiddown": 2,
+    "asteroidleft": 1,
+    "asteroidup": 1,
+    "target": 1700
+  },
+  {
+    "asteroiddown": 1,
+    "asteroidleft": 1,
+    "asteroidup": 2,
+    "target": 1800
+  },
+  {
+    "asteroidleft": 1,
+    "asteroidup": 3,
+    "target": 1900
+  },
+  {
+    "asteroiddown": 1,
+    "asteroidleft": 1,
+    "asteroidright": 1,
+    "asteroidup": 1,
+    "target": 2000
+  }
+]
