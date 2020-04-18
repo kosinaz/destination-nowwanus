@@ -1,4 +1,5 @@
 import Button from './button.js';
+import AsteroidMap from './asteroidMap.js';
 
 /**
  * Represent the level introduction modal of the level scene.
@@ -105,7 +106,10 @@ export default class MenuScene extends Phaser.Scene {
     play.once('click', () => {
       this.scene.transition({
         target: 'LevelScene',
-        data: data,
+        data: {
+          level: data.level,
+          map: new AsteroidMap(),
+        },
         duration: 150,
         moveBelow: true,
         sleep: false,

@@ -84,9 +84,9 @@ export default class LevelScene extends Phaser.Scene {
       body.gameObject.destroy();
     });
     this.physics.add.overlap(newhorizons, asteroids, () => {
-      this.scene.restart();
+      //this.scene.restart();
     });
-    newhorizons.speed = 200;
+    newhorizons.speed = 100;
     const up = this.add.image(0, -72, 'sprites', 'upon');
     up.setInteractive();
     up.on('pointerdown', () => {
@@ -166,24 +166,43 @@ export default class LevelScene extends Phaser.Scene {
     this.input.on('pointerup', () => {
       newhorizons.setVelocity(0);
     });
-    let leftgap = 3;
+    let t = 0;
     this.add.container(896, 448, [up, down, left, right]);
     this.time.addEvent({
-      delay: 500,
+      delay: 1000,
       callback: () => {
-        let newleftgap = leftgap;
+        t += 1;
+        if (t > 29) {
+          return;
+        }
         for (let i = 0; i < 7; i += 1) {
-          if (leftgap === i) {
+          if (data.map.hasRight(30 - t, i)
             // eslint-disable-next-line new-cap
-            newleftgap += Phaser.Math.Between(-1, 1);
+            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+          ) {
+            this.addasteroid(asteroids, 0, i);
+          }
+          if (data.map.hasLeft(t, i)
             // eslint-disable-next-line new-cap
-            newleftgap = Phaser.Math.Clamp(newleftgap, 1, 5);
-          // eslint-disable-next-line new-cap
-          } else if (Phaser.Math.Between(0, levels[data.level].asteroidleft)) {
+            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+          ) {
             this.addasteroid(asteroids, 2, i);
           }
         }
-        leftgap = newleftgap;
+        for (let i = 0; i < 11; i += 1) {
+          if (data.map.hasRight(30 - t, i)
+            // eslint-disable-next-line new-cap
+            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+          ) {
+            this.addasteroid(asteroids, 1, i);
+          }
+          if (data.map.hasLeft(t, i)
+            // eslint-disable-next-line new-cap
+            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+          ) {
+            this.addasteroid(asteroids, 3, i);
+          }
+        }
       },
       loop: true,
     });
@@ -212,7 +231,7 @@ export default class LevelScene extends Phaser.Scene {
       targets: asteroid,
       x: [1152, i * 96, -96, i * 96][d],
       y: [i * 96, 672, i * 96, -96][d],
-      duration: [13000/2, 8000/2, 13000/2, 8000/2][d],
+      duration: [13000, 8000, 13000, 8000][d],
     });
   }
 }
