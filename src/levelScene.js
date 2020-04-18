@@ -71,7 +71,6 @@ export default class LevelScene extends Phaser.Scene {
     });
     const newhorizons =
       this.physics.add.image(546, 262, 'sprites', 'newhorizons');
-    newhorizons.body.immovable = true;
     newhorizons.body.setCircle(16, 8, 10);
     newhorizons.setOrigin(0);
     const leftasteroids = this.physics.add.group({
@@ -82,56 +81,112 @@ export default class LevelScene extends Phaser.Scene {
     this.physics.add.overlap(newhorizons, leftasteroids, () => {
       this.scene.restart();
     });
-    const orders = [];
-    const up = new Button(this, 0, -72, 'sprites', 'upon');
+    const up = this.add.image(0, -72, 'sprites', 'upon');
+    up.setInteractive();
     up.on('pointerdown', () => {
-      orders.push(0);
+      newhorizons.setVelocity(0, -100);
     });
-    const down = new Button(this, 0, 72, 'sprites', 'downon');
+    up.on('pointerover', () => {
+      if (this.input.activePointer.isDown) {
+        newhorizons.setVelocity(0, -100);
+      }
+    });
+    up.on('pointerout', () => {
+      newhorizons.setVelocity(0);
+    });
+    this.input.keyboard.on('keydown-UP', () => {
+      newhorizons.setVelocity(0, -100);
+    });
+    this.input.keyboard.on('keyup-UP', () => {
+      newhorizons.setVelocityY(0);
+    });
+    const down = this.add.image(0, 72, 'sprites', 'downon');
+    down.setInteractive();
     down.on('pointerdown', () => {
-      orders.push(2);
+      newhorizons.setVelocity(0, 100);
     });
-    const left = new Button(this, -72, 0, 'sprites', 'lefton');
+    down.on('pointerover', () => {
+      if (this.input.activePointer.isDown) {
+        newhorizons.setVelocity(0, 100);
+      }
+    });
+    down.on('pointerout', () => {
+      newhorizons.setVelocity(0);
+    });
+    this.input.keyboard.on('keydown-DOWN', () => {
+      newhorizons.setVelocity(0, 100);
+    });
+    this.input.keyboard.on('keyup-DOWN', () => {
+      newhorizons.setVelocityY(0);
+    });
+    const left = this.add.image(-72, 0, 'sprites', 'lefton');
+    left.setInteractive();
     left.on('pointerdown', () => {
-      orders.push(1);
+      newhorizons.setVelocity(-100, 0);
     });
-    const right = new Button(this, 72, 0, 'sprites', 'righton');
+    left.on('pointerover', () => {
+      if (this.input.activePointer.isDown) {
+        newhorizons.setVelocity(-100, 0);
+      }
+    });
+    left.on('pointerout', () => {
+      newhorizons.setVelocity(0);
+    });
+    this.input.keyboard.on('keydown-LEFT', () => {
+      newhorizons.setVelocity(-100, 0);
+    });
+    this.input.keyboard.on('keyup-LEFT', () => {
+      newhorizons.setVelocityX(0);
+    });
+    const right = this.add.image(72, 0, 'sprites', 'righton');
+    right.setInteractive();
     right.on('pointerdown', () => {
-      orders.push(3);
+      newhorizons.setVelocity(100, 0);
+    });
+    right.on('pointerover', () => {
+      if (this.input.activePointer.isDown) {
+        newhorizons.setVelocity(100, 0);
+      }
+    });
+    right.on('pointerout', () => {
+      newhorizons.setVelocity(0);
+    });
+    this.input.keyboard.on('keydown-RIGHT', () => {
+      newhorizons.setVelocity(100, 0);
+    });
+    this.input.keyboard.on('keyup-RIGHT', () => {
+      newhorizons.setVelocityX(0);
+    });
+    this.input.on('pointerup', () => {
+      newhorizons.setVelocity(0);
     });
     this.add.container(896, 448, [up, down, left, right]);
-    this.move(newhorizons, orders, leftasteroids);
+    this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        this.addasteroid(leftasteroids);
+        this.addasteroid(leftasteroids);
+        this.addasteroid(leftasteroids);
+      },
+      loop: true,
+    });
   }
+
   /**
    *
    *
-   * @param {*} newhorizons
-   * @param {*} orders
    * @param {*} leftasteroids
    * @memberof LevelScene
    */
-  move(newhorizons, orders, leftasteroids) {
-    const order = orders.shift();
-    const x = ['+=0', '-=96', '+=0', '+=96'][order] || '+=0';
-    const y = ['-=96', '+=0', '+=96', '+=0'][order] || '+=0';
-    this.tweens.add({
-      targets: newhorizons,
-      x: x,
-      y: y,
-      onComplete: () => {
-        this.move(newhorizons, orders, leftasteroids);
-      },
-    });
+  addasteroid(leftasteroids) {
     const i = 96 * ~~(Math.random() * 5 + 1);
     const asteroid = this.physics.add.image(1152, i, 'sprites', 'asteroidleft');
     leftasteroids.add(asteroid);
-    asteroid.body.setCircle(16, 16, 16);
+    asteroid.body.setCircle(32, 0, 0);
     this.tweens.add({
       targets: asteroid,
       x: -96,
       duration: 13000,
-      onComplete: () => {
-      },
     });
   }
 }
