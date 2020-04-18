@@ -23,7 +23,6 @@ export default class PauseScene extends Phaser.Scene {
    * @memberof PauseScene
    */
   create(data) {
-    console.log('pause scene started');
     const bg = this.add.graphics({
       x: 0,
       y: 0,

@@ -70,85 +70,68 @@ export default class LevelScene extends Phaser.Scene {
       this.scene.pause();
     });
     const newhorizons =
-      this.physics.add.image(512, 288, 'sprites', 'newhorizons');
-    newhorizons.setCollideWorldBounds(true);
+      this.physics.add.image(546, 262, 'sprites', 'newhorizons');
     newhorizons.body.immovable = true;
+    newhorizons.body.setCircle(16, 8, 10);
+    newhorizons.setOrigin(0);
     const leftasteroids = this.physics.add.group({
-      key: 'sprites',
-      frame: 'asteroidleft',
       collideWorldBounds: true,
       customBoundsRectangle: new Phaser.Geom.Rectangle(-100, 0, 10000, 576),
-      repeat: 6,
-      setXY: {
-        x: 1200,
-        y: 288,
-        stepX: 400,
-      },
-      allowGravity: false,
-      velocityX: -200,
-    });
-    let y = 0;
-    leftasteroids.getChildren().forEach((asteroid) => {
-      asteroid.body.onWorldBounds = true;
-      // eslint-disable-next-line new-cap
-      y = Phaser.Math.Clamp(y + Phaser.Math.Between(-2, 2), -2, 2);
-      asteroid.y += y * 96;
+      immovable: true,
     });
     this.physics.add.overlap(newhorizons, leftasteroids, () => {
       this.scene.restart();
     });
+    const orders = [];
     const up = new Button(this, 0, -72, 'sprites', 'upon');
     up.on('pointerdown', () => {
-      buttons.each((button) => button.disableInteractive());
-      this.tweens.add({
-        targets: newhorizons,
-        y: '-=96',
-        duration: 400,
-        ease: 'Sine.easeInOut',
-        onComplete: () => {
-          buttons.each((button) => button.setInteractive());
-        },
-      });
+      orders.push(0);
     });
     const down = new Button(this, 0, 72, 'sprites', 'downon');
     down.on('pointerdown', () => {
-      buttons.each((button) => button.disableInteractive());
-      this.tweens.add({
-        targets: newhorizons,
-        y: '+=96',
-        duration: 400,
-        ease: 'Sine.easeInOut',
-        onComplete: () => {
-          buttons.each((button) => button.setInteractive());
-        },
-      });
+      orders.push(2);
     });
     const left = new Button(this, -72, 0, 'sprites', 'lefton');
     left.on('pointerdown', () => {
-      buttons.each((button) => button.disableInteractive());
-      this.tweens.add({
-        targets: newhorizons,
-        x: '-=96',
-        duration: 400,
-        ease: 'Sine.easeInOut',
-        onComplete: () => {
-          buttons.each((button) => button.setInteractive());
-        },
-      });
+      orders.push(1);
     });
     const right = new Button(this, 72, 0, 'sprites', 'righton');
     right.on('pointerdown', () => {
-      buttons.each((button) => button.disableInteractive());
-      this.tweens.add({
-        targets: newhorizons,
-        x: '+=96',
-        duration: 400,
-        ease: 'Sine.easeInOut',
-        onComplete: () => {
-          buttons.each((button) => button.setInteractive());
-        },
-      });
+      orders.push(3);
     });
-    const buttons = this.add.container(896, 448, [up, down, left, right]);
+    this.add.container(896, 448, [up, down, left, right]);
+    this.move(newhorizons, orders, leftasteroids);
+  }
+  /**
+   *
+   *
+   * @param {*} newhorizons
+   * @param {*} orders
+   * @param {*} leftasteroids
+   * @memberof LevelScene
+   */
+  move(newhorizons, orders, leftasteroids) {
+    const order = orders.shift();
+    const x = ['+=0', '-=96', '+=0', '+=96'][order] || '+=0';
+    const y = ['-=96', '+=0', '+=96', '+=0'][order] || '+=0';
+    this.tweens.add({
+      targets: newhorizons,
+      x: x,
+      y: y,
+      onComplete: () => {
+        this.move(newhorizons, orders, leftasteroids);
+      },
+    });
+    const i = 96 * ~~(Math.random() * 5 + 1);
+    const asteroid = this.physics.add.image(1152, i, 'sprites', 'asteroidleft');
+    leftasteroids.add(asteroid);
+    asteroid.body.setCircle(16, 16, 16);
+    this.tweens.add({
+      targets: asteroid,
+      x: -96,
+      duration: 13000,
+      onComplete: () => {
+      },
+    });
   }
 }
