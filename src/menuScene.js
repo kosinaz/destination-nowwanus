@@ -24,7 +24,6 @@ export default class MenuScene extends Phaser.Scene {
    * @memberof MenuScene
    */
   create(data) {
-    console.log('menu scene started');
     const bg = this.add.image(512, 288, 'bg');
     bg.setDisplaySize(1024, 576);
     const levels = this.cache.json.get('levels');
@@ -108,7 +107,7 @@ export default class MenuScene extends Phaser.Scene {
         target: 'LevelScene',
         data: {
           level: data.level,
-          map: new AsteroidMap(),
+          map: new AsteroidMap(levels[data.level]),
         },
         duration: 150,
         moveBelow: true,

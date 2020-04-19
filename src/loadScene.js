@@ -65,10 +65,16 @@ export default class LoadScene extends Phaser.Scene {
    * @memberof LoadScene
    */
   create() {
-    // this.scene.start('TitleScene');
-    this.scene.start('LevelScene', {
-      level: 0,
-      map: new AsteroidMap(),
-    });
+    this.scene.start('TitleScene');
+    // this.scene.start('LevelScene', {
+    //   level: 1,
+    //   map: new AsteroidMap({
+    //     // 'asteroiddown': 1,
+    //     'asteroidleft': 1,
+    //     // 'asteroidright': 1,
+    //     // 'asteroidup': 1,
+    //     'target': 2000,
+    //   }),
+    // });
   }
 }

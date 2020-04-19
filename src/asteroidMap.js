@@ -6,10 +6,11 @@
  */
 export default class AsteroidMap {
   /**
-   * Creates an instance of AsteroidMap.
+   *Creates an instance of AsteroidMap.
+   * @param {*} config
    * @memberof AsteroidMap
    */
-  constructor() {
+  constructor(config) {
     this.right = new Set();
     this.up = new Set();
     this.left = new Set();
@@ -51,31 +52,94 @@ export default class AsteroidMap {
           directions.push(3);
         }
         const d = Phaser.Math.RND.pick(directions);
-        console.log(rightx, righty, leftx, lefty, downx, downy, upx, upy);
         rightx += [-1, 0, 1, 0, 0][d];
-        // eslint-disable-next-line new-cap
-        // rightx = Phaser.Math.Clamp(rightx, -2, 2);
         righty += [0, -1, 0, 1, 0][d];
-        // eslint-disable-next-line new-cap
-        // righty = Phaser.Math.Clamp(righty, -2, 2);
         downx += [-1, 0, 1, 0, 0][d];
-        // eslint-disable-next-line new-cap
-        // downx = Phaser.Math.Clamp(downx, -2, 2);
         downy += [0, -1, 0, 1, 0][d];
-        // eslint-disable-next-line new-cap
-        // downy = Phaser.Math.Clamp(downy, -2, 2);
         leftx += [-1, 0, 1, 0, 0][d];
-        // eslint-disable-next-line new-cap
-        // leftx = Phaser.Math.Clamp(leftx, -2, 2);
         lefty += [0, -1, 0, 1, 0][d];
-        // eslint-disable-next-line new-cap
-        // lefty = Phaser.Math.Clamp(lefty, -2, 2);
         upx += [-1, 0, 1, 0, 0][d];
-        // eslint-disable-next-line new-cap
-        // upx = Phaser.Math.Clamp(upx, -2, 2);
         upy += [0, -1, 0, 1, 0][d];
-        // eslint-disable-next-line new-cap
-        // upy = Phaser.Math.Clamp(upy, -2, 2);
+      }
+    }
+    if (config.asteroidright) {
+      for (let y = -3; y < 4; y += 1) {
+        for (let x = -30; x < -15; x += 1) {
+          const chance = (3 - config.asteroidright) * 33 + (-x - 15) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.right.add(`${x},${y}`);
+          }
+        }
+        for (let x = -15; x < 1; x += 1) {
+          const chance = (3 - config.asteroidright) * 33 + (x + 15) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.right.add(`${x},${y}`);
+          }
+        }
+      }
+    }
+    if (config.asteroidleft) {
+      for (let y = -3; y < 4; y += 1) {
+        for (let x = 0; x < 15; x += 1) {
+          const chance = (3 - config.asteroidleft) * 33 + (15 - x) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.left.add(`${x},${y}`);
+          }
+        }
+        for (let x = 15; x < 31; x += 1) {
+          const chance = (3 - config.asteroidleft) * 33 + (x - 15) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.left.add(`${x},${y}`);
+          }
+        }
+      }
+    }
+    if (config.asteroiddown) {
+      for (let x = -5; x < 6; x += 1) {
+        for (let y = -30; y < -15; y += 1) {
+          const chance = (3 - config.asteroiddown) * 33 + (-y - 15) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.down.add(`${x},${y}`);
+          }
+        }
+        for (let y = -15; y < 1; y += 1) {
+          const chance = (3 - config.asteroiddown) * 33 + (y + 15) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.down.add(`${x},${y}`);
+          }
+        }
+      }
+    }
+    if (config.asteroidup) {
+      for (let x = -5; x < 6; x += 1) {
+        for (let y = 0; y < 15; y += 1) {
+          const chance = (3 - config.asteroidup) * 33 + (15 - y) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.up.add(`${x},${y}`);
+          }
+        }
+        for (let y = 15; y < 31; y += 1) {
+          const chance = (3 - config.asteroidup) * 33 + (y - 15) * 3;
+          // eslint-disable-next-line new-cap
+          const roll = Phaser.Math.Between(0, 100);
+          if (chance > roll) {
+            this.up.add(`${x},${y}`);
+          }
+        }
       }
     }
   }
