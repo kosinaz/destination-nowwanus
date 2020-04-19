@@ -196,6 +196,18 @@ export default class LevelScene extends Phaser.Scene {
         }
       }
     }
+    this.time.addEvent({
+      delay: 17000,
+      callback: () => {
+        this.cameras.main.fadeOut(300);
+      },
+    });
+    this.cameras.main.on('camerafadeoutcomplete', () => {
+      this.scene.stop('LevelScene');
+      this.scene.start('MenuScene', {
+        level: data.level,
+      });
+    });
   }
 
   /**
