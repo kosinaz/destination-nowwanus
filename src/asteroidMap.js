@@ -7,7 +7,6 @@
 export default class AsteroidMap {
   /**
    * Creates an instance of AsteroidMap.
-   * @param {*} config
    * @memberof AsteroidMap
    */
   constructor() {
@@ -15,13 +14,13 @@ export default class AsteroidMap {
     this.up = new Set();
     this.left = new Set();
     this.down = new Set();
-    let rightx = 30;
-    let righty = 3;
-    let downx = 5;
-    let downy = 30;
+    let rightx = 0;
+    let righty = 0;
+    let downx = 0;
+    let downy = 0;
     let leftx = 0;
-    let lefty = 3;
-    let upx = 5;
+    let lefty = 0;
+    let upx = 0;
     let upy = 0;
     for (let i = 0; i < 60; i += 1) {
       this.right.add(`${rightx},${righty}`);
@@ -38,30 +37,45 @@ export default class AsteroidMap {
         this.left.add(`${leftx},${lefty}`);
         this.up.add(`${upx},${upy}`);
         // eslint-disable-next-line new-cap
-        const d = Phaser.Math.Between(0, 4);
-        switch (d) {
-          case 0: this.right.add(`${rightx},${righty}`); break;
-          case 1: this.down.add(`${downx},${downy}`); break;
-          case 2: this.left.add(`${leftx},${lefty}`); break;
-          case 3: this.up.add(`${upx},${upy}`); break;
-          default: break;
+        const directions = [];
+        if (downx > -2 && upx > -2) {
+          directions.push(0);
         }
+        if (righty > -2 && lefty > -2) {
+          directions.push(1);
+        }
+        if (downx < 2 && upx < 2) {
+          directions.push(2);
+        }
+        if (righty < 2 && lefty < 2) {
+          directions.push(3);
+        }
+        const d = Phaser.Math.RND.pick(directions);
+        console.log(rightx, righty, leftx, lefty, downx, downy, upx, upy);
         rightx += [-1, 0, 1, 0, 0][d];
+        // eslint-disable-next-line new-cap
+        // rightx = Phaser.Math.Clamp(rightx, -2, 2);
         righty += [0, -1, 0, 1, 0][d];
         // eslint-disable-next-line new-cap
-        righty = Phaser.Math.Clamp(righty, 1, 5);
+        // righty = Phaser.Math.Clamp(righty, -2, 2);
         downx += [-1, 0, 1, 0, 0][d];
         // eslint-disable-next-line new-cap
-        downx = Phaser.Math.Clamp(downx, 1, 11);
+        // downx = Phaser.Math.Clamp(downx, -2, 2);
         downy += [0, -1, 0, 1, 0][d];
+        // eslint-disable-next-line new-cap
+        // downy = Phaser.Math.Clamp(downy, -2, 2);
         leftx += [-1, 0, 1, 0, 0][d];
+        // eslint-disable-next-line new-cap
+        // leftx = Phaser.Math.Clamp(leftx, -2, 2);
         lefty += [0, -1, 0, 1, 0][d];
         // eslint-disable-next-line new-cap
-        lefty = Phaser.Math.Clamp(lefty, 1, 5);
+        // lefty = Phaser.Math.Clamp(lefty, -2, 2);
         upx += [-1, 0, 1, 0, 0][d];
         // eslint-disable-next-line new-cap
-        upx = Phaser.Math.Clamp(upx, 1, 11);
+        // upx = Phaser.Math.Clamp(upx, -2, 2);
         upy += [0, -1, 0, 1, 0][d];
+        // eslint-disable-next-line new-cap
+        // upy = Phaser.Math.Clamp(upy, -2, 2);
       }
     }
   }

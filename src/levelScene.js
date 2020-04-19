@@ -71,18 +71,18 @@ export default class LevelScene extends Phaser.Scene {
       this.scene.pause();
     });
     const newhorizons =
-      this.physics.add.image(546, 262, 'sprites', 'newhorizons');
+      this.physics.add.image(490, 262, 'sprites', 'newhorizons');
     newhorizons.body.setCircle(16, 8, 10);
     newhorizons.setOrigin(0);
     newhorizons.setCollideWorldBounds(true);
     const asteroids = this.physics.add.group({
-      collideWorldBounds: true,
-      customBoundsRectangle: new Phaser.Geom.Rectangle(-300, -300, 1600, 1100),
-      immovable: true,
+      // collideWorldBounds: true,
+      // customBoundsRectangle: new Phaser.Geom.Rectangle(-400, -400, 1600, 1600),
+      // immovable: true,
     });
-    this.physics.world.on('worldbounds', (body) => {
-      body.gameObject.destroy();
-    });
+    // this.physics.world.on('worldbounds', (body) => {
+    //   body.gameObject.destroy();
+    // });
     this.physics.add.overlap(newhorizons, asteroids, () => {
       //this.scene.restart();
     });
@@ -166,46 +166,73 @@ export default class LevelScene extends Phaser.Scene {
     this.input.on('pointerup', () => {
       newhorizons.setVelocity(0);
     });
-    let t = 0;
     this.add.container(896, 448, [up, down, left, right]);
-    this.time.addEvent({
-      delay: 1000,
-      callback: () => {
-        t += 1;
-        if (t > 29) {
-          return;
+    for (let x = -30; x < 1; x += 1) {
+      for (let y = -3; y < 4; y += 1) {
+        if (data.map.hasRight(x, y)) {
+          this.addasteroid(asteroids, 0, 512 + x * 96, 288 + y * 96);
         }
-        for (let i = 0; i < 7; i += 1) {
-          if (data.map.hasRight(30 - t, i)
-            // eslint-disable-next-line new-cap
-            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
-          ) {
-            this.addasteroid(asteroids, 0, i);
-          }
-          if (data.map.hasLeft(t, i)
-            // eslint-disable-next-line new-cap
-            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
-          ) {
-            this.addasteroid(asteroids, 2, i);
-          }
+      }
+    }
+    for (let x = 0; x < 31; x += 1) {
+      for (let y = -3; y < 4; y += 1) {
+        if (data.map.hasLeft(x, y)) {
+          this.addasteroid(asteroids, 2, 512 + x * 96, 288 + y * 96);
         }
-        for (let i = 0; i < 11; i += 1) {
-          if (data.map.hasRight(30 - t, i)
-            // eslint-disable-next-line new-cap
-            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
-          ) {
-            this.addasteroid(asteroids, 1, i);
-          }
-          if (data.map.hasLeft(t, i)
-            // eslint-disable-next-line new-cap
-            //Phaser.Math.Between(0, levels[data.level].asteroidleft)
-          ) {
-            this.addasteroid(asteroids, 3, i);
-          }
+      }
+    }
+    for (let x = -5; x < 6; x += 1) {
+      for (let y = -30; y < 1; y += 1) {
+        if (data.map.hasDown(x, y)) {
+          this.addasteroid(asteroids, 1, 512 + x * 96, 288 + y * 96);
         }
-      },
-      loop: true,
-    });
+      }
+    }
+    for (let x = -5; x < 6; x += 1) {
+      for (let y = 0; y < 31; y += 1) {
+        if (data.map.hasUp(x, y)) {
+          this.addasteroid(asteroids, 3, 512 + x * 96, 288 + y * 96);
+        }
+      }
+    }
+    // this.time.addEvent({
+    //   delay: 1000,
+    //   callback: () => {
+    //     t += 1;
+    //     if (t > 29) {
+    //       return;
+    //     }
+    //     for (let i = 0; i < 7; i += 1) {
+    //       if (data.map.hasRight(30 - t, i)
+    //         // eslint-disable-next-line new-cap
+    //         //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+    //       ) {
+    //         this.addasteroid(asteroids, 0, i);
+    //       }
+    //       if (data.map.hasLeft(t, i)
+    //         // eslint-disable-next-line new-cap
+    //         //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+    //       ) {
+    //         this.addasteroid(asteroids, 2, i);
+    //       }
+    //     }
+    //     // for (let i = 0; i < 11; i += 1) {
+    //     //   if (!data.map.hasUp(i, 30 - t)
+    //     //     // eslint-disable-next-line new-cap
+    //     //     //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+    //     //   ) {
+    //     //     this.addasteroid(asteroids, 1, i);
+    //     //   }
+    //     //   if (!data.map.hasDown(i, t)
+    //     //     // eslint-disable-next-line new-cap
+    //     //     //Phaser.Math.Between(0, levels[data.level].asteroidleft)
+    //     //   ) {
+    //     //     this.addasteroid(asteroids, 3, i);
+    //     //   }
+    //     // }
+    //   },
+    //   loop: true,
+    // });
   }
 
   /**
@@ -213,25 +240,24 @@ export default class LevelScene extends Phaser.Scene {
    *
    * @param {*} asteroids
    * @param {*} d
-   * @param {*} i
+   * @param {*} x
+   * @param {*} y
    * @memberof LevelScene
    */
-  addasteroid(asteroids, d, i) {
-    const x = [-96, i * 96, 1152, i * 96][d];
-    const y = [i * 96, -96, i * 96, 672][d];
+  addasteroid(asteroids, d, x, y) {
     const frame =
       ['asteroidright', 'asteroiddown', 'asteroidleft', 'asteroidup'][d];
     const asteroid = this.physics.add.image(x, y, 'sprites', frame);
     asteroids.add(asteroid);
     asteroid.body.setCircle(32, 0, 0);
     asteroid.body.onWorldBounds = true;
-
+    asteroid.setVelocity([100, 0, -100, 0][d], [0, 100, 0, -100][d]);
     asteroid.setDepth(-1);
-    this.tweens.add({
-      targets: asteroid,
-      x: [1152, i * 96, -96, i * 96][d],
-      y: [i * 96, 672, i * 96, -96][d],
-      duration: [13000, 8000, 13000, 8000][d],
-    });
+    // this.tweens.add({
+    //   targets: asteroid,
+    //   x: [1088, i * 96, -64, i * 96][d],
+    //   y: [i * 96, 864, i * 96, -288][d],
+    //   duration: 12000,
+    // });
   }
 }

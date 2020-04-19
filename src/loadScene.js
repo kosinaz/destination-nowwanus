@@ -1,3 +1,5 @@
+import AsteroidMap from './asteroidMap.js';
+
 /**
  * Represent the load screen of the game.
  *
@@ -63,6 +65,10 @@ export default class LoadScene extends Phaser.Scene {
    * @memberof LoadScene
    */
   create() {
-    this.scene.start('TitleScene');
+    // this.scene.start('TitleScene');
+    this.scene.start('LevelScene', {
+      level: 0,
+      map: new AsteroidMap(),
+    });
   }
 }
