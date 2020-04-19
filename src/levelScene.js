@@ -220,6 +220,10 @@ export default class LevelScene extends Phaser.Scene {
    * @memberof LevelScene
    */
   addasteroid(asteroids, d, x, y) {
+    // eslint-disable-next-line new-cap
+    x += Phaser.Math.Between(-16, 16);
+    // eslint-disable-next-line new-cap
+    y += Phaser.Math.Between(-16, 16);
     const frame =
       ['asteroidright', 'asteroiddown', 'asteroidleft', 'asteroidup'][d];
     const asteroid = this.physics.add.image(x, y, 'sprites', frame);
