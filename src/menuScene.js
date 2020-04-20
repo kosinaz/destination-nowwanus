@@ -103,27 +103,14 @@ export default class MenuScene extends Phaser.Scene {
     );
     const play = new Button(this, 0, 0, 'sprites', 'playon');
     play.once('click', () => {
-      this.scene.transition({
-        target: 'LevelScene',
-        data: {
-          level: data.level,
-          map: new AsteroidMap(levels[data.level]),
-        },
-        duration: 150,
-        moveBelow: true,
-        sleep: false,
-      });
-      bg.destroy();
+      this.cameras.main.fadeOut(300);
     });
-    this.events.on('transitionout', () => {
-      this.tweens.add({
-        targets: window,
-        duration: 150,
-        y: {
-          from: 304,
-          to: -288,
-        },
+    this.cameras.main.on('camerafadeoutcomplete', () => {
+      this.scene.start('LevelScene', {
+        level: data.level,
+        map: new AsteroidMap(levels[data.level]),
       });
+      this.scene.stop();
     });
     const buttons = this.add.container(0, 224, [play]);
     if (data.level > 0) {
