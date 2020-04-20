@@ -1,5 +1,3 @@
-import Button from './button.js';
-
 /**
  * Represent the home screen of the game.
  *

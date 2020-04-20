@@ -1,5 +1,3 @@
-import Button from './button.js';
-
 /**
  * Represent the instruction screen of the game.
  *
