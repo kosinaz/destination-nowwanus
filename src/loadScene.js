@@ -45,12 +45,14 @@ export default class LoadScene extends Phaser.Scene {
     const bar = this.add.image(-mask.width, 0, 'bar');
     bar.mask = new Phaser.Display.Masks.BitmapMask(this, mask);
     this.container = this.add.container(512, 288, [border, mask, bar]);
-    this.load.on('progress', (value) => this.tweens.add({
-      targets: bar,
-      x: -mask.width * (value - 1),
-      ease: 'Quad',
-      duration: 300,
-    }));
+    this.load.on('progress', (value) => {
+      this.tweens.add({
+        targets: bar,
+        x: mask.width * (value - 1),
+        ease: 'Quad',
+        duration: 3000,
+      });
+    });
     this.load.atlas('sprites', 'image/sprites.png', 'image/sprites.json');
     this.load.image('bg', 'image/bg.png');
     this.load.json('levels', 'data/levels.json');
