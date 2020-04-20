@@ -65,12 +65,13 @@ export default class LevelScene extends Phaser.Scene {
     this.newhorizons.speed = 200;
     const asteroids = this.physics.add.group();
     this.physics.add.overlap(this.newhorizons, asteroids, () => {
-      this.scene.start('RewindScene', {
-        level: data.level,
-        map: data.map,
-        snaps: snaps,
-      });
-      this.scene.stop();
+      this.scene.restart();
+      // this.scene.start('RewindScene', {
+      //   level: data.level,
+      //   map: data.map,
+      //   snaps: snaps,
+      // });
+      // this.scene.stop();
     });
     this.keys =
       this.input.keyboard.addKeys('W,A,S,D,UP,LEFT,DOWN,RIGHT,SPACE,ENTER');
@@ -95,16 +96,16 @@ export default class LevelScene extends Phaser.Scene {
         this.cameras.main.fadeOut(300);
       },
     });
-    const snaps = [];
-    this.time.addEvent({
-      delay: 300,
-      callback: () => {
-        this.game.renderer.snapshot((snap) => {
-          snaps.unshift(snap);
-        });
-      },
-      loop: true,
-    });
+    // const snaps = [];
+    // this.time.addEvent({
+    //   delay: 300,
+    //   callback: () => {
+    //     this.game.renderer.snapshot((snap) => {
+    //       snaps.unshift(snap);
+    //     });
+    //   },
+    //   loop: true,
+    // });
     this.cameras.main.on('camerafadeoutcomplete', () => {
       this.scene.stop('LevelScene');
       this.scene.start('MenuScene', {
