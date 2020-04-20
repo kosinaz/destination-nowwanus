@@ -44,19 +44,6 @@ export default class LevelScene extends Phaser.Scene {
       },
       lifespan: 5000,
     }]);
-    const pause = this.add.image(984, 40, 'sprites', 'pause');
-    pause.setInteractive();
-    pause.on('pointerdown', () => {
-      this.pauseLevel(data);
-    });
-    this.input.keyboard.on('keydown-ESC', (event) => {
-      event.preventDefault();
-      this.pauseLevel(data);
-    });
-    this.input.keyboard.on('keydown-PAUSE', (event) => {
-      event.preventDefault();
-      this.pauseLevel(data);
-    });
     this.newhorizons =
       this.physics.add.image(490, 262, 'sprites', 'newhorizons');
     this.newhorizons.body.setCircle(16, 8, 10);
@@ -106,6 +93,19 @@ export default class LevelScene extends Phaser.Scene {
     //   },
     //   loop: true,
     // });
+    const pause = this.add.image(984, 40, 'sprites', 'pause');
+    pause.setInteractive();
+    pause.on('pointerdown', () => {
+      this.pauseLevel(data);
+    });
+    this.input.keyboard.on('keydown-ESC', (event) => {
+      event.preventDefault();
+      this.pauseLevel(data);
+    });
+    this.input.keyboard.on('keydown-PAUSE', (event) => {
+      event.preventDefault();
+      this.pauseLevel(data);
+    });
     this.cameras.main.on('camerafadeoutcomplete', () => {
       this.scene.stop('LevelScene');
       this.scene.start('MenuScene', {
