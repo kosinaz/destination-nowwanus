@@ -40,9 +40,7 @@ export default class InstructionScene extends Phaser.Scene {
     }
     bg.mask = maskgraphics.createGeometryMask();
     bg.mask.setInvertAlpha();
-    const linegraphics = this.add.graphics();
-    linegraphics.lineStyle(3, 0xffffff);
-    linegraphics.strokeLineShape(new Phaser.Geom.Line(430, 216, 480, 266));
+    this.add.line(0, 0, 430, 216, 480, 266, 0xffffff).setOrigin(0);
     const newhorizons = this.add.text(430, 216, `control the new horizons
       with wasd or arrows`, {
       fontSize: '16px',

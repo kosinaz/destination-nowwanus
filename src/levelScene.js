@@ -29,23 +29,21 @@ export default class LevelScene extends Phaser.Scene {
     dustGraphics.fillStyle(0xffffff);
     dustGraphics.fillPoint(0, 0, 2);
     dustGraphics.generateTexture('dust', 2, 2);
-    this.add.particles('dust', [
-      {
-        emitZone: {
-          source: offscreen,
-        },
-        deathZone: {
-          source: onscreen,
-          type: 'onLeave',
-        },
-        frequency: 25,
-        speedX: {
-          min: -200,
-          max: -1000,
-        },
-        lifespan: 5000,
+    this.add.particles('dust', [{
+      emitZone: {
+        source: offscreen,
       },
-    ]);
+      deathZone: {
+        source: onscreen,
+        type: 'onLeave',
+      },
+      frequency: 25,
+      speedX: {
+        min: -200,
+        max: -1000,
+      },
+      lifespan: 5000,
+    }]);
     const pause = this.add.image(984, 40, 'sprites', 'pause');
     pause.setInteractive();
     pause.on('pointerdown', () => {
@@ -67,7 +65,12 @@ export default class LevelScene extends Phaser.Scene {
     this.newhorizons.speed = 200;
     const asteroids = this.physics.add.group();
     this.physics.add.overlap(this.newhorizons, asteroids, () => {
-      this.scene.restart();
+      this.scene.start('RewindScene', {
+        level: data.level,
+        map: data.map,
+        snaps: snaps,
+      });
+      this.scene.stop();
     });
     this.keys =
       this.input.keyboard.addKeys('W,A,S,D,UP,LEFT,DOWN,RIGHT,SPACE,ENTER');
@@ -91,6 +94,16 @@ export default class LevelScene extends Phaser.Scene {
       callback: () => {
         this.cameras.main.fadeOut(300);
       },
+    });
+    const snaps = [];
+    this.time.addEvent({
+      delay: 300,
+      callback: () => {
+        this.game.renderer.snapshot((snap) => {
+          snaps.unshift(snap);
+        });
+      },
+      loop: true,
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
       this.scene.stop('LevelScene');
@@ -135,6 +148,11 @@ export default class LevelScene extends Phaser.Scene {
     if (this.keys.D.isDown || this.keys.RIGHT.isDown) {
       this.newhorizons.setVelocityX(this.newhorizons.speed);
     }
+    const within = this.physics.overlapRect(96, 96, 896, 448);
+
+    within.forEach((body) => {
+      //body.gameObject.setTint(0xff0000);
+    });
   }
 
   /**
