@@ -66,53 +66,53 @@ export default class LevelScene extends Phaser.Scene {
     });
     newhorizons.speed = 200;
     this.input.keyboard.on('keydown-UP', (event) => {
-      newhorizons.setVelocity(0, -newhorizons.speed);
+      newhorizons.setVelocityY(-newhorizons.speed);
       event.preventDefault();
     });
     this.input.keyboard.on('keyup-UP', () => {
       newhorizons.setVelocityY(0);
     });
     this.input.keyboard.on('keydown-DOWN', (event) => {
-      newhorizons.setVelocity(0, newhorizons.speed);
+      newhorizons.setVelocityY(newhorizons.speed);
       event.preventDefault();
     });
     this.input.keyboard.on('keyup-DOWN', () => {
       newhorizons.setVelocityY(0);
     });
     this.input.keyboard.on('keydown-LEFT', (event) => {
-      newhorizons.setVelocity(-newhorizons.speed, 0);
+      newhorizons.setVelocityX(-newhorizons.speed);
       event.preventDefault();
     });
     this.input.keyboard.on('keyup-LEFT', () => {
       newhorizons.setVelocityX(0);
     });
     this.input.keyboard.on('keydown-RIGHT', (event) => {
-      newhorizons.setVelocity(newhorizons.speed, 0);
+      newhorizons.setVelocityX(newhorizons.speed);
       event.preventDefault();
     });
     this.input.keyboard.on('keyup-RIGHT', () => {
       newhorizons.setVelocityX(0);
     });
     this.input.keyboard.on('keydown-W', () => {
-      newhorizons.setVelocity(0, -newhorizons.speed);
+      newhorizons.setVelocityY(-newhorizons.speed);
     });
     this.input.keyboard.on('keyup-W', () => {
       newhorizons.setVelocityY(0);
     });
     this.input.keyboard.on('keydown-S', () => {
-      newhorizons.setVelocity(0, newhorizons.speed);
+      newhorizons.setVelocityY(newhorizons.speed);
     });
     this.input.keyboard.on('keyup-S', () => {
       newhorizons.setVelocityY(0);
     });
     this.input.keyboard.on('keydown-A', () => {
-      newhorizons.setVelocity(-newhorizons.speed, 0);
+      newhorizons.setVelocityX(-newhorizons.speed);
     });
     this.input.keyboard.on('keyup-A', () => {
       newhorizons.setVelocityX(0);
     });
     this.input.keyboard.on('keydown-D', () => {
-      newhorizons.setVelocity(newhorizons.speed, 0);
+      newhorizons.setVelocityX(newhorizons.speed);
     });
     this.input.keyboard.on('keyup-D', () => {
       newhorizons.setVelocityX(0);
