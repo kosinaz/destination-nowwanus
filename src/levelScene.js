@@ -55,67 +55,20 @@ export default class LevelScene extends Phaser.Scene {
       });
       this.scene.pause();
     });
-    const newhorizons =
+    this.newhorizons =
       this.physics.add.image(490, 262, 'sprites', 'newhorizons');
-    newhorizons.body.setCircle(16, 8, 10);
-    newhorizons.setOrigin(0);
-    newhorizons.setCollideWorldBounds(true);
+    this.newhorizons.body.setCircle(16, 8, 10);
+    this.newhorizons.setOrigin(0);
+    this.newhorizons.setCollideWorldBounds(true);
+    this.newhorizons.speed = 200;
     const asteroids = this.physics.add.group();
-    this.physics.add.overlap(newhorizons, asteroids, () => {
+    this.physics.add.overlap(this.newhorizons, asteroids, () => {
       this.scene.restart();
     });
-    newhorizons.speed = 200;
-    this.input.keyboard.on('keydown-UP', (event) => {
-      newhorizons.setVelocityY(-newhorizons.speed);
+    this.keys =
+      this.input.keyboard.addKeys('W,A,S,D,UP,LEFT,DOWN,RIGHT,SPACE,ENTER');
+    this.input.keyboard.on('keydown', (event) => {
       event.preventDefault();
-    });
-    this.input.keyboard.on('keyup-UP', () => {
-      newhorizons.setVelocityY(0);
-    });
-    this.input.keyboard.on('keydown-DOWN', (event) => {
-      newhorizons.setVelocityY(newhorizons.speed);
-      event.preventDefault();
-    });
-    this.input.keyboard.on('keyup-DOWN', () => {
-      newhorizons.setVelocityY(0);
-    });
-    this.input.keyboard.on('keydown-LEFT', (event) => {
-      newhorizons.setVelocityX(-newhorizons.speed);
-      event.preventDefault();
-    });
-    this.input.keyboard.on('keyup-LEFT', () => {
-      newhorizons.setVelocityX(0);
-    });
-    this.input.keyboard.on('keydown-RIGHT', (event) => {
-      newhorizons.setVelocityX(newhorizons.speed);
-      event.preventDefault();
-    });
-    this.input.keyboard.on('keyup-RIGHT', () => {
-      newhorizons.setVelocityX(0);
-    });
-    this.input.keyboard.on('keydown-W', () => {
-      newhorizons.setVelocityY(-newhorizons.speed);
-    });
-    this.input.keyboard.on('keyup-W', () => {
-      newhorizons.setVelocityY(0);
-    });
-    this.input.keyboard.on('keydown-S', () => {
-      newhorizons.setVelocityY(newhorizons.speed);
-    });
-    this.input.keyboard.on('keyup-S', () => {
-      newhorizons.setVelocityY(0);
-    });
-    this.input.keyboard.on('keydown-A', () => {
-      newhorizons.setVelocityX(-newhorizons.speed);
-    });
-    this.input.keyboard.on('keyup-A', () => {
-      newhorizons.setVelocityX(0);
-    });
-    this.input.keyboard.on('keydown-D', () => {
-      newhorizons.setVelocityX(newhorizons.speed);
-    });
-    this.input.keyboard.on('keyup-D', () => {
-      newhorizons.setVelocityX(0);
     });
     for (const asteroid of data.map.right) {
       this.addasteroid(asteroids, 0, asteroid.x, asteroid.y);
@@ -143,6 +96,27 @@ export default class LevelScene extends Phaser.Scene {
     });
     this.scene.run('InstructionScene', data);
     this.scene.pause();
+  }
+
+  /**
+   *
+   *
+   * @memberof LevelScene
+   */
+  update() {
+    this.newhorizons.setVelocity(0);
+    if (this.keys.W.isDown || this.keys.UP.isDown) {
+      this.newhorizons.setVelocityY(-this.newhorizons.speed);
+    }
+    if (this.keys.A.isDown || this.keys.LEFT.isDown) {
+      this.newhorizons.setVelocityX(-this.newhorizons.speed);
+    }
+    if (this.keys.S.isDown || this.keys.DOWN.isDown) {
+      this.newhorizons.setVelocityY(this.newhorizons.speed);
+    }
+    if (this.keys.D.isDown || this.keys.RIGHT.isDown) {
+      this.newhorizons.setVelocityX(this.newhorizons.speed);
+    }
   }
 
   /**
