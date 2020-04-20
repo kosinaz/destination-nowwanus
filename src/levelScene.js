@@ -65,26 +65,30 @@ export default class LevelScene extends Phaser.Scene {
       this.scene.restart();
     });
     newhorizons.speed = 200;
-    this.input.keyboard.on('keydown-UP', () => {
+    this.input.keyboard.on('keydown-UP', (event) => {
       newhorizons.setVelocity(0, -newhorizons.speed);
+      event.preventDefault();
     });
     this.input.keyboard.on('keyup-UP', () => {
       newhorizons.setVelocityY(0);
     });
-    this.input.keyboard.on('keydown-DOWN', () => {
+    this.input.keyboard.on('keydown-DOWN', (event) => {
       newhorizons.setVelocity(0, newhorizons.speed);
+      event.preventDefault();
     });
     this.input.keyboard.on('keyup-DOWN', () => {
       newhorizons.setVelocityY(0);
     });
-    this.input.keyboard.on('keydown-LEFT', () => {
+    this.input.keyboard.on('keydown-LEFT', (event) => {
       newhorizons.setVelocity(-newhorizons.speed, 0);
+      event.preventDefault();
     });
     this.input.keyboard.on('keyup-LEFT', () => {
       newhorizons.setVelocityX(0);
     });
-    this.input.keyboard.on('keydown-RIGHT', () => {
+    this.input.keyboard.on('keydown-RIGHT', (event) => {
       newhorizons.setVelocity(newhorizons.speed, 0);
+      event.preventDefault();
     });
     this.input.keyboard.on('keyup-RIGHT', () => {
       newhorizons.setVelocityX(0);
