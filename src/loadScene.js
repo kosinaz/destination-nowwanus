@@ -50,7 +50,7 @@ export default class LoadScene extends Phaser.Scene {
         targets: bar,
         x: mask.width * (value - 1),
         ease: 'Quad',
-        duration: 3000,
+        duration: 300,
       });
     });
     this.load.atlas('sprites', 'image/sprites.png', 'image/sprites.json');
