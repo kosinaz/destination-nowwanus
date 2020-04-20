@@ -33,6 +33,10 @@ export default class TitleScene extends Phaser.Scene {
       play.disableInteractive();
       this.cameras.main.fadeOut(300);
     });
+    this.input.keyboard.on('keydown', (event) => {
+      event.preventDefault();
+      this.cameras.main.fadeOut(300);
+    });
     this.cameras.main.once('camerafadeoutcomplete', () => {
       this.scene.start('MenuScene', {
         level: 0,

@@ -71,17 +71,12 @@ export default class InstructionScene extends Phaser.Scene {
           this.scene.resume('LevelScene');
           this.scene.stop();
         });
-        this.input.keyboard.on('keyup', () => {
+        this.input.keyboard.on('keyup', (event) => {
+          event.preventDefault();
           this.scene.resume('LevelScene');
           this.scene.stop();
         });
       },
     });
   }
-  /**
-   *
-   *
-   * @memberof InstructionScene
-   */
-  update() {}
 }

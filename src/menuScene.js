@@ -105,6 +105,14 @@ export default class MenuScene extends Phaser.Scene {
     play.once('click', () => {
       this.cameras.main.fadeOut(300);
     });
+    this.input.keyboard.on('keydown-ENTER', (event) => {
+      event.preventDefault();
+      this.cameras.main.fadeOut(300);
+    });
+    this.input.keyboard.on('keydown-SPACE', (event) => {
+      event.preventDefault();
+      this.cameras.main.fadeOut(300);
+    });
     this.cameras.main.on('camerafadeoutcomplete', () => {
       this.scene.start('LevelScene', {
         level: data.level,
@@ -116,42 +124,24 @@ export default class MenuScene extends Phaser.Scene {
     if (data.level > 0) {
       const left = new Button(this, -96, 0, 'sprites', 'left');
       left.once('click', () => {
-        this.tweens.add({
-          targets: window,
-          duration: 150,
-          x: {
-            from: 512,
-            to: 1300,
-          },
-          onComplete: () => {
-            this.scene.start('MenuScene', {
-              level: data.level - 1,
-              from: 'left',
-            });
-          },
-        });
+        this.previousLevel(window, data);
       });
       buttons.add(left);
+      this.input.keyboard.on('keydown-LEFT', (event) => {
+        event.preventDefault();
+        this.previousLevel(window, data);
+      });
     }
     if (data.level < levels.length - 1) {
       const right = new Button(this, 96, 0, 'sprites', 'right');
       right.once('click', () => {
-        this.tweens.add({
-          targets: window,
-          duration: 150,
-          x: {
-            from: 512,
-            to: -276,
-          },
-          onComplete: () => {
-            this.scene.start('MenuScene', {
-              level: data.level + 1,
-              from: 'right',
-            });
-          },
-        });
+        this.nextLevel(window, data);
       });
       buttons.add(right);
+      this.input.keyboard.on('keydown-RIGHT', (event) => {
+        event.preventDefault();
+        this.nextLevel(window, data);
+      });
     }
     const windowcontent = [windowbg, title, stars, target, warnings, buttons];
     const window = this.add.container(512, 304, windowcontent);
@@ -176,5 +166,53 @@ export default class MenuScene extends Phaser.Scene {
         },
       });
     }
+  }
+
+  /**
+   *
+   *
+   * @param {*} window
+   * @param {*} data
+   * @memberof MenuScene
+   */
+  nextLevel(window, data) {
+    this.tweens.add({
+      targets: window,
+      duration: 150,
+      x: {
+        from: 512,
+        to: -276,
+      },
+      onComplete: () => {
+        this.scene.start('MenuScene', {
+          level: data.level + 1,
+          from: 'right',
+        });
+      },
+    });
+  }
+
+  /**
+   *
+   *
+   * @param {*} window
+   * @param {*} data
+   * @memberof MenuScene
+   */
+  previousLevel(window, data) {
+    this.tweens.add({
+      targets: window,
+      duration: 150,
+      x: {
+        from: 512,
+        to: 1300,
+      },
+      onComplete: () => {
+        this.scene.start('MenuScene', {
+          level: data.level - 1,
+          from: 'left',
+        });
+      },
+    });
   }
 }

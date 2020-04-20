@@ -34,25 +34,22 @@ export default class PauseScene extends Phaser.Scene {
     title.setOrigin(0.5);
     const play = new Button(this, 24, 24, 'sprites', 'play');
     play.once('click', () => {
-      this.tweens.add({
-        targets: window,
-        duration: 150,
-        y: {
-          from: 288,
-          to: -48,
-        },
-        onComplete: () => {
-          if (data.from === 'level') {
-            this.scene.resume('LevelScene');
-          } else if (data.from === 'instruction') {
-            this.scene.resume('InstructionScene');
-          }
-          this.scene.stop();
-        },
-      });
+      this.resumeLevel(data);
+    });
+    this.input.keyboard.on('keydown-ENTER', (event) => {
+      event.preventDefault();
+      this.resumeLevel(data);
+    });
+    this.input.keyboard.on('keydown-SPACE', (event) => {
+      event.preventDefault();
+      this.resumeLevel(data);
     });
     const close = new Button(this, -24, 24, 'sprites', 'close');
     close.once('click', () => {
+      this.cameras.main.fadeOut(300);
+    });
+    this.input.keyboard.on('keydown-ESC', (event) => {
+      event.preventDefault();
       this.cameras.main.fadeOut(300);
     });
     const window = this.add.container(512, 288, [windowbg, title, play, close]);
@@ -70,6 +67,30 @@ export default class PauseScene extends Phaser.Scene {
       this.scene.start('MenuScene', {
         level: data.level,
       });
+    });
+  }
+  /**
+   *
+   *
+   * @param {*} data
+   * @memberof PauseScene
+   */
+  resumeLevel(data) {
+    this.tweens.add({
+      targets: window,
+      duration: 150,
+      y: {
+        from: 288,
+        to: -48,
+      },
+      onComplete: () => {
+        if (data.from === 'level') {
+          this.scene.resume('LevelScene');
+        } else if (data.from === 'instruction') {
+          this.scene.resume('InstructionScene');
+        }
+        this.scene.stop();
+      },
     });
   }
 }
