@@ -160,41 +160,17 @@ export default class LevelScene extends Phaser.Scene {
       newhorizons.setVelocity(0);
     });
     this.add.container(896, 448, [up, down, left, right]);
-    if (levels[data.level].asteroidright) {
-      for (let x = -30; x < 1; x += 1) {
-        for (let y = -3; y < 4; y += 1) {
-          if (data.map.hasRight(x, y)) {
-            this.addasteroid(asteroids, 0, 512 + x * 96, 288 + y * 96);
-          }
-        }
-      }
+    for (const asteroid of data.map.right) {
+      this.addasteroid(asteroids, 0, asteroid.x, asteroid.y);
     }
-    if (levels[data.level].asteroidleft) {
-      for (let x = 0; x < 31; x += 1) {
-        for (let y = -3; y < 4; y += 1) {
-          if (data.map.hasLeft(x, y)) {
-            this.addasteroid(asteroids, 2, 512 + x * 96, 288 + y * 96);
-          }
-        }
-      }
+    for (const asteroid of data.map.down) {
+      this.addasteroid(asteroids, 1, asteroid.x, asteroid.y);
     }
-    if (levels[data.level].asteroiddown) {
-      for (let x = -5; x < 6; x += 1) {
-        for (let y = -30; y < 1; y += 1) {
-          if (data.map.hasDown(x, y)) {
-            this.addasteroid(asteroids, 1, 512 + x * 96, 288 + y * 96);
-          }
-        }
-      }
+    for (const asteroid of data.map.left) {
+      this.addasteroid(asteroids, 2, asteroid.x, asteroid.y);
     }
-    if (levels[data.level].asteroidup) {
-      for (let x = -5; x < 6; x += 1) {
-        for (let y = 0; y < 31; y += 1) {
-          if (data.map.hasUp(x, y)) {
-            this.addasteroid(asteroids, 3, 512 + x * 96, 288 + y * 96);
-          }
-        }
-      }
+    for (const asteroid of data.map.up) {
+      this.addasteroid(asteroids, 3, asteroid.x, asteroid.y);
     }
     this.time.addEvent({
       delay: 17000,
@@ -220,10 +196,6 @@ export default class LevelScene extends Phaser.Scene {
    * @memberof LevelScene
    */
   addasteroid(asteroids, d, x, y) {
-    // eslint-disable-next-line new-cap
-    x += Phaser.Math.Between(-16, 16);
-    // eslint-disable-next-line new-cap
-    y += Phaser.Math.Between(-16, 16);
     const frame =
       ['asteroidright', 'asteroiddown', 'asteroidleft', 'asteroidup'][d];
     const asteroid = this.physics.add.image(x, y, 'sprites', frame);

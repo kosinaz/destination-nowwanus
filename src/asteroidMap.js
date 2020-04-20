@@ -15,6 +15,10 @@ export default class AsteroidMap {
     this.up = new Set();
     this.left = new Set();
     this.down = new Set();
+    this.rightgaps = new Set();
+    this.upgaps = new Set();
+    this.leftgaps = new Set();
+    this.downgaps = new Set();
     let rightx = 0;
     let righty = 0;
     let downx = 0;
@@ -24,31 +28,35 @@ export default class AsteroidMap {
     let upx = 0;
     let upy = 0;
     for (let i = 0; i < 60; i += 1) {
-      this.right.add(`${rightx},${righty}`);
-      this.down.add(`${downx},${downy}`);
-      this.left.add(`${leftx},${lefty}`);
-      this.up.add(`${upx},${upy}`);
+      this.rightgaps.add(`${rightx},${righty}`);
+      this.downgaps.add(`${downx},${downy}`);
+      this.leftgaps.add(`${leftx},${lefty}`);
+      this.upgaps.add(`${upx},${upy}`);
       rightx -= 1;
       downy -= 1;
       leftx += 1;
       upy += 1;
       if (i < 30) {
-        this.right.add(`${rightx},${righty}`);
-        this.down.add(`${downx},${downy}`);
-        this.left.add(`${leftx},${lefty}`);
-        this.up.add(`${upx},${upy}`);
+        this.rightgaps.add(`${rightx},${righty}`);
+        this.downgaps.add(`${downx},${downy}`);
+        this.leftgaps.add(`${leftx},${lefty}`);
+        this.upgaps.add(`${upx},${upy}`);
         // eslint-disable-next-line new-cap
         const directions = [];
-        if (downx > -2 && upx > -2) {
+        if (downx > -2 && upx > -2 &&
+          (config.asteroiddown || config.asteroidup)) {
           directions.push(0);
         }
-        if (righty > -2 && lefty > -2) {
+        if (righty > -2 && lefty > -2 &&
+          (config.asteroidright || config.asteroidleft)) {
           directions.push(1);
         }
-        if (downx < 2 && upx < 2) {
+        if (downx < 2 && upx < 2 &&
+          (config.asteroiddown || config.asteroidup)) {
           directions.push(2);
         }
-        if (righty < 2 && lefty < 2) {
+        if (righty < 2 && lefty < 2 &&
+          (config.asteroidright || config.asteroidleft)) {
           directions.push(3);
         }
         const d = Phaser.Math.RND.pick(directions);
@@ -68,16 +76,24 @@ export default class AsteroidMap {
           const chance = (3 - config.asteroidright) * 33 + (-x - 15) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.right.add(`${x},${y}`);
+          if (!this.rightgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.right.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
         for (let x = -15; x < 1; x += 1) {
           const chance = (3 - config.asteroidright) * 33 + (x + 15) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.right.add(`${x},${y}`);
+          if (!this.rightgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.right.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
       }
@@ -88,16 +104,24 @@ export default class AsteroidMap {
           const chance = (3 - config.asteroidleft) * 33 + (15 - x) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.left.add(`${x},${y}`);
+          if (!this.leftgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.left.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
         for (let x = 15; x < 31; x += 1) {
           const chance = (3 - config.asteroidleft) * 33 + (x - 15) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.left.add(`${x},${y}`);
+          if (!this.leftgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.left.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
       }
@@ -108,16 +132,24 @@ export default class AsteroidMap {
           const chance = (3 - config.asteroiddown) * 33 + (-y - 15) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.down.add(`${x},${y}`);
+          if (!this.downgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.down.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
         for (let y = -15; y < 1; y += 1) {
           const chance = (3 - config.asteroiddown) * 33 + (y + 15) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.down.add(`${x},${y}`);
+          if (!this.downgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.down.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
       }
@@ -128,16 +160,24 @@ export default class AsteroidMap {
           const chance = (3 - config.asteroidup) * 33 + (15 - y) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.up.add(`${x},${y}`);
+          if (!this.upgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.up.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
         for (let y = 15; y < 31; y += 1) {
           const chance = (3 - config.asteroidup) * 33 + (y - 15) * 3;
           // eslint-disable-next-line new-cap
           const roll = Phaser.Math.Between(0, 100);
-          if (chance > roll) {
-            this.up.add(`${x},${y}`);
+          if (!this.upgaps.has(`${x},${y}`) && chance < roll) {
+            // eslint-disable-next-line new-cap
+            const ax = 512 + Phaser.Math.Between(-16, 16);
+            // eslint-disable-next-line new-cap
+            const ay = 288 + Phaser.Math.Between(-16, 16);
+            this.up.add({x: x * 96 + ax, y: y * 96 + ay});
           }
         }
       }
@@ -153,7 +193,7 @@ export default class AsteroidMap {
    * @memberof AsteroidMap
    */
   hasRight(x, y) {
-    return !this.right.has(`${x},${y}`);
+    return !this.rightgaps.has(`${x},${y}`);
   }
 
   /**
@@ -165,7 +205,7 @@ export default class AsteroidMap {
    * @memberof AsteroidMap
    */
   hasDown(x, y) {
-    return !this.down.has(`${x},${y}`);
+    return !this.downgaps.has(`${x},${y}`);
   }
 
   /**
@@ -177,7 +217,7 @@ export default class AsteroidMap {
    * @memberof AsteroidMap
    */
   hasLeft(x, y) {
-    return !this.left.has(`${x},${y}`);
+    return !this.leftgaps.has(`${x},${y}`);
   }
 
   /**
@@ -189,6 +229,6 @@ export default class AsteroidMap {
    * @memberof AsteroidMap
    */
   hasUp(x, y) {
-    return !this.up.has(`${x},${y}`);
+    return !this.upgaps.has(`${x},${y}`);
   }
 }
