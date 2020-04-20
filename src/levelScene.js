@@ -23,26 +23,11 @@ export default class LevelScene extends Phaser.Scene {
    * @memberof LevelScene
    */
   create(data) {
-    const levels = this.cache.json.get('levels');
     const bg = this.add.image(512, 288, 'bg');
     bg.setDepth(-2);
-    bg.setDisplaySize(1024, 576);
-    this.events.on('transitionstart', () => {
-      this.tweens.add({
-        targets: bg,
-        ease: 'Back',
-        duration: 500,
-        displayWidth: 1920,
-        displayHeight: 1080,
-      });
-    });
     const offscreen = new Phaser.Geom.Rectangle(1024, 0, 1, 576);
     const onscreen = new Phaser.Geom.Rectangle(0, 0, 1025, 576);
-    const dustGraphics = this.make.graphics({
-      x: 0,
-      y: 0,
-      add: false,
-    });
+    const dustGraphics = this.make.graphics();
     dustGraphics.fillStyle(0xffffff);
     dustGraphics.fillPoint(0, 0, 2);
     dustGraphics.generateTexture('dust', 2, 2);
@@ -63,10 +48,12 @@ export default class LevelScene extends Phaser.Scene {
         lifespan: 5000,
       },
     ]);
-    const pause = new Button(this, 984, 40, 'sprites', 'pause');
-    pause.on('click', () => {
+    const pause = this.add.image(984, 40, 'sprites', 'pause');
+    pause.setInteractive();
+    pause.on('pointerdown', () => {
       this.scene.launch('PauseScene', {
         level: data.level,
+        from: 'level',
       });
       this.scene.pause();
     });
@@ -80,37 +67,11 @@ export default class LevelScene extends Phaser.Scene {
       this.scene.restart();
     });
     newhorizons.speed = 200;
-    const up = this.add.image(0, -72, 'sprites', 'upon');
-    up.setInteractive();
-    up.on('pointerdown', () => {
-      newhorizons.setVelocity(0, -newhorizons.speed);
-    });
-    up.on('pointerover', () => {
-      if (this.input.activePointer.isDown) {
-        newhorizons.setVelocity(0, -newhorizons.speed);
-      }
-    });
-    up.on('pointerout', () => {
-      newhorizons.setVelocity(0);
-    });
     this.input.keyboard.on('keydown-UP', () => {
       newhorizons.setVelocity(0, -newhorizons.speed);
     });
     this.input.keyboard.on('keyup-UP', () => {
       newhorizons.setVelocityY(0);
-    });
-    const down = this.add.image(0, 72, 'sprites', 'downon');
-    down.setInteractive();
-    down.on('pointerdown', () => {
-      newhorizons.setVelocity(0, newhorizons.speed);
-    });
-    down.on('pointerover', () => {
-      if (this.input.activePointer.isDown) {
-        newhorizons.setVelocity(0, newhorizons.speed);
-      }
-    });
-    down.on('pointerout', () => {
-      newhorizons.setVelocity(0);
     });
     this.input.keyboard.on('keydown-DOWN', () => {
       newhorizons.setVelocity(0, newhorizons.speed);
@@ -118,37 +79,11 @@ export default class LevelScene extends Phaser.Scene {
     this.input.keyboard.on('keyup-DOWN', () => {
       newhorizons.setVelocityY(0);
     });
-    const left = this.add.image(-72, 0, 'sprites', 'lefton');
-    left.setInteractive();
-    left.on('pointerdown', () => {
-      newhorizons.setVelocity(-newhorizons.speed, 0);
-    });
-    left.on('pointerover', () => {
-      if (this.input.activePointer.isDown) {
-        newhorizons.setVelocity(-newhorizons.speed, 0);
-      }
-    });
-    left.on('pointerout', () => {
-      newhorizons.setVelocity(0);
-    });
     this.input.keyboard.on('keydown-LEFT', () => {
       newhorizons.setVelocity(-newhorizons.speed, 0);
     });
     this.input.keyboard.on('keyup-LEFT', () => {
       newhorizons.setVelocityX(0);
-    });
-    const right = this.add.image(72, 0, 'sprites', 'righton');
-    right.setInteractive();
-    right.on('pointerdown', () => {
-      newhorizons.setVelocity(newhorizons.speed, 0);
-    });
-    right.on('pointerover', () => {
-      if (this.input.activePointer.isDown) {
-        newhorizons.setVelocity(newhorizons.speed, 0);
-      }
-    });
-    right.on('pointerout', () => {
-      newhorizons.setVelocity(0);
     });
     this.input.keyboard.on('keydown-RIGHT', () => {
       newhorizons.setVelocity(newhorizons.speed, 0);
@@ -156,10 +91,30 @@ export default class LevelScene extends Phaser.Scene {
     this.input.keyboard.on('keyup-RIGHT', () => {
       newhorizons.setVelocityX(0);
     });
-    this.input.on('pointerup', () => {
-      newhorizons.setVelocity(0);
+    this.input.keyboard.on('keydown-W', () => {
+      newhorizons.setVelocity(0, -newhorizons.speed);
     });
-    this.add.container(896, 448, [up, down, left, right]);
+    this.input.keyboard.on('keyup-W', () => {
+      newhorizons.setVelocityY(0);
+    });
+    this.input.keyboard.on('keydown-S', () => {
+      newhorizons.setVelocity(0, newhorizons.speed);
+    });
+    this.input.keyboard.on('keyup-S', () => {
+      newhorizons.setVelocityY(0);
+    });
+    this.input.keyboard.on('keydown-A', () => {
+      newhorizons.setVelocity(-newhorizons.speed, 0);
+    });
+    this.input.keyboard.on('keyup-A', () => {
+      newhorizons.setVelocityX(0);
+    });
+    this.input.keyboard.on('keydown-D', () => {
+      newhorizons.setVelocity(newhorizons.speed, 0);
+    });
+    this.input.keyboard.on('keyup-D', () => {
+      newhorizons.setVelocityX(0);
+    });
     for (const asteroid of data.map.right) {
       this.addasteroid(asteroids, 0, asteroid.x, asteroid.y);
     }
@@ -184,6 +139,8 @@ export default class LevelScene extends Phaser.Scene {
         level: data.level,
       });
     });
+    this.scene.run('InstructionScene', data);
+    this.scene.pause();
   }
 
   /**

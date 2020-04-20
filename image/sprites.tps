@@ -70,7 +70,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>1</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -198,7 +198,11 @@
             </struct>
             <key type="filename">sprites/asteroidleft.png</key>
             <key type="filename">sprites/asteroidright.png</key>
+            <key type="filename">sprites/downon.png</key>
+            <key type="filename">sprites/lefton.png</key>
             <key type="filename">sprites/playon.png</key>
+            <key type="filename">sprites/righton.png</key>
+            <key type="filename">sprites/upon.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -245,7 +249,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">sprites/close.png</key>
             <key type="filename">sprites/left.png</key>
+            <key type="filename">sprites/pause.png</key>
+            <key type="filename">sprites/play.png</key>
             <key type="filename">sprites/right.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -261,6 +268,52 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">sprites/newhorizons.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>10,12,19,24</rect>
+                <key>scale9Paddings</key>
+                <rect>10,12,19,24</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">sprites/newhorizonstitle.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>26,32,53,64</rect>
+                <key>scale9Paddings</key>
+                <rect>26,32,53,64</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">sprites/nowwanus.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>37,67,73,133</rect>
+                <key>scale9Paddings</key>
+                <rect>37,67,73,133</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">sprites/pausewindow.png</key>
             <key type="filename">sprites/star.png</key>
             <key type="filename">sprites/staron.png</key>
             <struct type="IndividualSpriteSettings">

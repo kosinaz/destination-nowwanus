@@ -23,10 +23,7 @@ export default class PauseScene extends Phaser.Scene {
    * @memberof PauseScene
    */
   create(data) {
-    const bg = this.add.graphics({
-      x: 0,
-      y: 0,
-    });
+    const bg = this.add.graphics();
     bg.fillStyle(0x000000, 0.75);
     bg.fillRect(0, 0, 1024, 576);
     const windowbg = this.add.image(0, 0, 'sprites', 'pausewindow');
@@ -45,7 +42,11 @@ export default class PauseScene extends Phaser.Scene {
           to: -48,
         },
         onComplete: () => {
-          this.scene.resume('LevelScene');
+          if (data.from === 'level') {
+            this.scene.resume('LevelScene');
+          } else if (data.from === 'instruction') {
+            this.scene.resume('InstructionScene');
+          }
           this.scene.stop();
         },
       });
@@ -64,6 +65,7 @@ export default class PauseScene extends Phaser.Scene {
       },
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
+      this.scene.stop('InstructionScene');
       this.scene.stop('LevelScene');
       this.scene.start('MenuScene', {
         level: data.level,

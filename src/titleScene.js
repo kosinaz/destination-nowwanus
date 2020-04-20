@@ -26,6 +26,8 @@ export default class TitleScene extends Phaser.Scene {
     const bg = this.add.image(512, 288, 'bg');
     bg.setDisplaySize(1024, 576);
     this.add.image(512, 192, 'sprites', 'title');
+    this.add.image(112, 464, 'sprites', 'newhorizonstitle');
+    this.add.image(928, 432, 'sprites', 'nowwanus');
     const play = new Button(this, 512, 464, 'sprites', 'playon');
     play.once('click', () => {
       play.disableInteractive();
