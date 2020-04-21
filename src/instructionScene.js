@@ -62,7 +62,7 @@ export default class InstructionScene extends Phaser.Scene {
       this.scene.pause();
     });
     this.time.addEvent({
-      delay: 1000,
+      delay: 300,
       callback: () => {
         pause.setInteractive();
         this.input.on('pointerup', () => {

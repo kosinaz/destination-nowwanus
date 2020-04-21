@@ -22,7 +22,7 @@ export default class LevelScene extends Phaser.Scene {
    */
   create(data) {
     const bg = this.add.image(512, 288, 'bg');
-    bg.setDepth(-2);
+    bg.setDepth(-3);
     const offscreen = new Phaser.Geom.Rectangle(1024, 0, 1, 576);
     const onscreen = new Phaser.Geom.Rectangle(0, 0, 1025, 576);
     const dustGraphics = this.make.graphics();
@@ -50,19 +50,28 @@ export default class LevelScene extends Phaser.Scene {
     this.newhorizons.setOrigin(0);
     this.newhorizons.setCollideWorldBounds(true);
     this.newhorizons.speed = 200;
-    this.focus = this.add.rectangle(512, 288, 288, 288);
-    this.focus.setStrokeStyle(1, 0xffffff, 0.25);
+    this.focus = this.add.graphics({
+      x: 512,
+      y: 288,
+    });
+    this.focus.lineStyle(3, 0xffff00, 0.5);
+    this.focus.beginPath();
+    this.focus.moveTo(-144, -128);
+    this.focus.lineTo(-144, -144);
+    this.focus.lineTo(-128, -144);
+    this.focus.moveTo(-144, 128);
+    this.focus.lineTo(-144, 144);
+    this.focus.lineTo(-128, 144);
+    this.focus.moveTo(144, -128);
+    this.focus.lineTo(144, -144);
+    this.focus.lineTo(128, -144);
+    this.focus.moveTo(144, 128);
+    this.focus.lineTo(144, 144);
+    this.focus.lineTo(128, 144);
+    this.focus.strokePath();
     this.physics.world.enable(this.focus);
-    // this.focus2 = this.add.rectangle(512, 288, 288 + 96 * 1, 288 + 96 * 1);
-    // this.focus2.setStrokeStyle(1, 0xffffff);
-    // this.focus3 = this.add.rectangle(512, 288, 288 + 96 * 2, 288 + 96 * 2);
-    // this.focus3.setStrokeStyle(1, 0xffffff);
-    // this.focus4 = this.add.rectangle(512, 288, 288 + 96 * 3, 288 + 96 * 3);
-    // this.focus4.setStrokeStyle(1, 0xffffff);
-    // this.focus5 = this.add.rectangle(512, 288, 288 + 96 * 4, 288 + 96 * 4);
-    // this.focus5.setStrokeStyle(1, 0xffffff);
-    // this.focus6 = this.add.rectangle(512, 288, 288 + 96 * 5, 288 + 96 * 5);
-    // this.focus6.setStrokeStyle(1, 0xffffff);
+    this.focus.body.setSize(288, 288);
+    this.focus.body.setOffset(-144);
     this.asteroids = this.physics.add.group();
     this.physics.add.overlap(this.newhorizons, this.asteroids, () => {
       this.scene.restart();
@@ -123,14 +132,51 @@ export default class LevelScene extends Phaser.Scene {
       event.preventDefault();
       this.pauseLevel(data);
     });
+    this.input.keyboard.on('keydown-ENTER', (event) => {
+      event.preventDefault();
+      if (this.photos < this.photosmax) {
+        this.takePicture();
+      }
+    });
+    this.input.keyboard.on('keydown-SPACE', (event) => {
+      event.preventDefault();
+      if (this.photos < this.photosmax) {
+        this.takePicture();
+      }
+    });
     this.cameras.main.on('camerafadeoutcomplete', () => {
       this.scene.stop('LevelScene');
       this.scene.start('MenuScene', {
         level: data.level,
       });
     });
+    this.photos = 0;
+    this.photosmax = 5;
+    this.add.image(76, 512, 'sprites', 'frame').setDepth(-1);
+    this.add.image(40, 536, 'sprites', 'photocounter');
+    this.photocounter = this.add.text(40, 536, this.photosmax - this.photos, {
+      fontSize: '24px',
+      fontFamily: 'font',
+    });
+    this.photocounter.setOrigin(0.5);
+    this.textures.on('addtexture', (photo) => {
+      this.cameras.main.flash();
+      this.add.image(76 + (this.photos - 1) * 16, 512, photo)
+          .setScale(0.25).setDepth(-1);
+      this.add.image(76 + (this.photos - 1) * 16, 512, 'sprites', 'frame')
+          .setDepth(-1);
+    });
     this.scene.run('InstructionScene', data);
     this.scene.pause();
+    this.add.image(88, 100, 'sprites', 'progressborder');
+    this.add.image(88, 100, 'sprites', 'progressbar');
+    this.add.image(88, 100, 'sprites', 'progressoverlay');
+    this.science = 0;
+    this.sciencecounter = this.add.text(144, 40, this.science + '⚛', {
+      fontSize: '24px',
+      fontFamily: 'font',
+    });
+    this.sciencecounter.setOrigin(1, 0.5);
   }
 
   /**
@@ -152,6 +198,20 @@ export default class LevelScene extends Phaser.Scene {
    *
    * @memberof LevelScene
    */
+  takePicture() {
+    const focus = this.focus.body.getBounds({});
+    this.game.renderer.snapshotArea(focus.x, focus.y, 288, 288, (image) => {
+      this.photos += 1;
+      this.textures.addImage('photo' + Phaser.Math.RND.uuid(), image);
+      this.photocounter.text = this.photosmax - this.photos;
+    });
+  }
+
+  /**
+   *
+   *
+   * @memberof LevelScene
+   */
   update() {
     this.newhorizons.setVelocity(0);
     if (this.keys.W.isDown || this.keys.UP.isDown) {
@@ -166,7 +226,11 @@ export default class LevelScene extends Phaser.Scene {
     if (this.keys.D.isDown || this.keys.RIGHT.isDown) {
       this.newhorizons.setVelocityX(this.newhorizons.speed);
     }
-    this.focus.setPosition(this.newhorizons.x + 22, this.newhorizons.y + 26);
+    // eslint-disable-next-line new-cap
+    const focusx = Phaser.Math.Clamp(this.newhorizons.x + 22, 144, 880);
+    // eslint-disable-next-line new-cap
+    const focusy = Phaser.Math.Clamp(this.newhorizons.y + 26, 144, 432);
+    this.focus.setPosition(focusx, focusy);
     this.asteroids.getChildren().forEach((asteroid) => {
       if (asteroid.body.touching.none) {
         asteroid.infocus.visible = false;
@@ -252,7 +316,7 @@ export default class LevelScene extends Phaser.Scene {
         [200, 0, -200, 0][d],
         [0, 200, 0, -200][d],
     );
-    asteroidcontainer.setDepth(-1);
+    asteroidcontainer.setDepth(-2);
     asteroidcontainer.infocus = infocus;
     asteroidcontainer.outoffocus = outoffocus;
   }

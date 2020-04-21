@@ -252,6 +252,7 @@
             <key type="filename">sprites/close.png</key>
             <key type="filename">sprites/left.png</key>
             <key type="filename">sprites/pause.png</key>
+            <key type="filename">sprites/photocounter.png</key>
             <key type="filename">sprites/play.png</key>
             <key type="filename">sprites/right.png</key>
             <struct type="IndividualSpriteSettings">
@@ -342,6 +343,23 @@
                 <rect>24,24,48,48</rect>
                 <key>scale9Paddings</key>
                 <rect>24,24,48,48</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">sprites/progressbar.png</key>
+            <key type="filename">sprites/progressborder.png</key>
+            <key type="filename">sprites/progressoverlay.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>36,42,72,84</rect>
+                <key>scale9Paddings</key>
+                <rect>36,42,72,84</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
