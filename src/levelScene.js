@@ -21,6 +21,8 @@ export default class LevelScene extends Phaser.Scene {
    * @memberof LevelScene
    */
   create(data) {
+    const levels = this.cache.json.get('levels');
+    this.target = levels[data.level].target;
     const bg = this.add.image(512, 288, 'bg');
     bg.setDepth(-3);
     const offscreen = new Phaser.Geom.Rectangle(1024, 0, 1, 576);
@@ -83,7 +85,9 @@ export default class LevelScene extends Phaser.Scene {
       // this.scene.stop();
     });
     this.physics.add.overlap(this.focus, this.asteroids, (focus, asteroid) => {
-      asteroid.infocus.visible = true;
+      if (!asteroid.shot) {
+        asteroid.infocus.visible = true;
+      }
       asteroid.outoffocus.visible = false;
     });
     this.keys =
@@ -160,7 +164,7 @@ export default class LevelScene extends Phaser.Scene {
     });
     this.photocounter.setOrigin(0.5);
     this.textures.on('addtexture', (photo) => {
-      this.cameras.main.flash();
+      this.cameras.main.flash(50, 64, 64, 64);
       this.add.image(76 + (this.photos - 1) * 16, 512, photo)
           .setScale(0.25).setDepth(-1);
       this.add.image(76 + (this.photos - 1) * 16, 512, 'sprites', 'frame')
@@ -168,15 +172,25 @@ export default class LevelScene extends Phaser.Scene {
     });
     this.scene.run('InstructionScene', data);
     this.scene.pause();
-    this.add.image(88, 100, 'sprites', 'progressborder');
-    this.add.image(88, 100, 'sprites', 'progressbar');
-    this.add.image(88, 100, 'sprites', 'progressoverlay');
     this.science = 0;
-    this.sciencecounter = this.add.text(144, 40, this.science + '⚛', {
+    const progressborder = this.add.image(0, 0, 'sprites', 'progressborder');
+    this.progressbar = this.add.image(0, 160, 'sprites', 'progressbar');
+    const progressoverlay = this.add.image(0, 0, 'sprites', 'progressoverlay');
+    this.progresscounter = this.add.text(56, -60, this.science + '⚛', {
       fontSize: '24px',
       fontFamily: 'font',
     });
-    this.sciencecounter.setOrigin(1, 0.5);
+    this.add.container(88, 100, [
+      progressborder,
+      this.progressbar,
+      this.progresscounter,
+      progressoverlay,
+    ]);
+    this.progressmask = this.add.image(88, 100, 'sprites', 'progressbar');
+    this.progressmask.visible = false;
+    this.progressbar.mask =
+      new Phaser.Display.Masks.BitmapMask(this, this.progressmask);
+    this.progresscounter.setOrigin(1, 0.5);
   }
 
   /**
@@ -204,6 +218,24 @@ export default class LevelScene extends Phaser.Scene {
       this.photos += 1;
       this.textures.addImage('photo' + Phaser.Math.RND.uuid(), image);
       this.photocounter.text = this.photosmax - this.photos;
+      this.physics.overlapRect(focus.x, focus.y, 288, 288).forEach((body) => {
+        if (this.asteroids.contains(body.gameObject) &&
+          !body.gameObject.shot) {
+          body.gameObject.shot = true;
+          body.gameObject.infocus.visible = false;
+          this.science += 1;
+          this.progresscounter.text = this.science + '⚛';
+          let y = 160 - ~~((this.science / this.target) * 92);
+          // eslint-disable-next-line new-cap
+          y = Phaser.Math.Clamp(y, 0, 160);
+          this.tweens.add({
+            targets: this.progressbar,
+            y: y,
+            ease: 'Quad',
+            duration: 300,
+          });
+        }
+      });
     });
   }
 
@@ -239,7 +271,8 @@ export default class LevelScene extends Phaser.Scene {
     });
     this.physics.overlapRect(0, 0, 1024, 576).forEach((body) => {
       if (this.asteroids.contains(body.gameObject) &&
-        !body.gameObject.infocus.visible) {
+        !body.gameObject.infocus.visible &&
+        !body.gameObject.shot) {
         body.gameObject.outoffocus.visible = true;
       }
     });
