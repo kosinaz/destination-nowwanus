@@ -134,6 +134,48 @@ export default class MenuScene extends Phaser.Scene {
       });
       this.scene.stop();
     });
+    if (data.science) {
+      if (data.science >= levels[data.level].target &&
+        (!Profile.level[data.level] ||
+          Profile.level[data.level] < 1)) {
+        Profile.star += 1;
+        Profile.level[data.level] = 1;
+        this.tweens.add({
+          delay: 500,
+          targets: star1,
+          duration: 150,
+          scale: 1,
+          ease: 'Back',
+        });
+        if (Profile.progress < data.level + 1) {
+          Profile.progress += 1;
+        }
+      }
+      if (data.science >= levels[data.level].target * 1.5 &&
+        Profile.level[data.level] < 2) {
+        Profile.star += 1;
+        Profile.level[data.level] = 2;
+        this.tweens.add({
+          delay: 750,
+          targets: star2,
+          duration: 150,
+          scale: 0.75,
+          ease: 'Back',
+        });
+      }
+      if (data.science >= levels[data.level].target * 1.75 &&
+        Profile.level[data.level] < 3) {
+        Profile.star += 1;
+        Profile.level[data.level] = 3;
+        this.tweens.add({
+          delay: 1000,
+          targets: star3,
+          duration: 150,
+          scale: 0.75,
+          ease: 'Back',
+        });
+      }
+    }
     const buttons = this.add.container(0, 224, [play]);
     if (data.level > 0) {
       const left = new Button(this, -96, 0, 'sprites', 'left');
@@ -147,60 +189,25 @@ export default class MenuScene extends Phaser.Scene {
       });
     }
     if (data.level < levels.length - 1) {
-      const right = new Button(this, 96, 0, 'sprites', 'right');
-      right.once('click', () => {
-        this.nextLevel(window, data);
-      });
-      buttons.add(right);
-      this.input.keyboard.on('keydown-RIGHT', (event) => {
-        event.preventDefault();
-        this.nextLevel(window, data);
-      });
+      if (Profile.progress > data.level) {
+        const right = new Button(this, 96, 0, 'sprites', 'right');
+        right.once('click', () => {
+          this.nextLevel(window, data);
+        });
+        buttons.add(right);
+        this.input.keyboard.on('keydown-RIGHT', (event) => {
+          event.preventDefault();
+          this.nextLevel(window, data);
+        });
+      } else {
+        const right = this.add.image(96, 0, 'sprites', 'lock');
+        buttons.add(right);
+      }
     }
     const windowcontent = [windowbg, title, stars, target, warnings, buttons];
     const window = this.add.container(512, 304, windowcontent);
     if (!data.from) {
       this.cameras.main.fadeIn(100);
-      if (data.science) {
-        console.log(Profile.level);
-        if (data.science >= levels[data.level].target &&
-          (!Profile.level[data.level] ||
-          Profile.level[data.level] < 1)) {
-          Profile.star += 1;
-          Profile.level[data.level] = 1;
-          this.tweens.add({
-            delay: 500,
-            targets: star1,
-            duration: 150,
-            scale: 1,
-            ease: 'Back',
-          });
-        }
-        if (data.science >= levels[data.level].target * 1.5 &&
-          Profile.level[data.level] < 2) {
-          Profile.star += 1;
-          Profile.level[data.level] = 2;
-          this.tweens.add({
-            delay: 750,
-            targets: star2,
-            duration: 150,
-            scale: 0.75,
-            ease: 'Back',
-          });
-        }
-        if (data.science >= levels[data.level].target * 1.75 &&
-          Profile.level[data.level] < 3) {
-          Profile.star += 1;
-          Profile.level[data.level] = 3;
-          this.tweens.add({
-            delay: 1000,
-            targets: star3,
-            duration: 150,
-            scale: 0.75,
-            ease: 'Back',
-          });
-        }
-      }
     } else if (data.from === 'left') {
       this.tweens.add({
         targets: window,
