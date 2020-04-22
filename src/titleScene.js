@@ -28,7 +28,7 @@ export default class TitleScene extends Phaser.Scene {
     this.add.image(512, 192, 'sprites', 'title');
     this.add.image(112, 464, 'sprites', 'newhorizonstitle');
     this.add.image(928, 432, 'sprites', 'nowwanus');
-    this.add.text(1016, 568, 'version 0.2.0 (2020-04-21)', {
+    this.add.text(1016, 568, 'version 0.3.0 (2020-04-22)', {
       fontSize: '16px',
       fontFamily: 'font',
     }).setOrigin(1);
