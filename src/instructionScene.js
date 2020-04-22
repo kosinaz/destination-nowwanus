@@ -26,6 +26,8 @@ export default class InstructionScene extends Phaser.Scene {
     bg.fillRect(0, 0, 1024, 576);
     const maskgraphics = this.make.graphics();
     maskgraphics.fillCircle(512, 288, 50);
+    maskgraphics.fillCircle(70, 506, 70);
+    maskgraphics.fillCircle(0, 0, 200);
     for (const asteroid of data.map.right) {
       maskgraphics.fillCircle(asteroid.x, asteroid.y, 50);
     }
@@ -40,19 +42,29 @@ export default class InstructionScene extends Phaser.Scene {
     }
     bg.mask = maskgraphics.createGeometryMask();
     bg.mask.setInvertAlpha();
-    this.add.line(0, 0, 430, 216, 480, 266, 0xffffff).setOrigin(0);
-    const newhorizons = this.add.text(430, 216, `control the new horizons
-      with wasd or arrows`, {
+    this.add.line(0, 0, 430, 216, 472, 258, 0xffffff).setOrigin(0);
+    const newhorizons = this.add.text(430, 166, `control the new horizons
+
+with wasd or arrows
+
+to evade the asteroids`, {
       fontSize: '16px',
       fontFamily: 'font',
-      align: 'right',
+      align: 'center',
     });
-    newhorizons.setOrigin(1);
-    const asteroids = this.add.text(512, 384, 'evade the asteroids', {
+    newhorizons.setOrigin(0.5);
+    this.add.line(0, 0, 75, 185, 165, 275, 0xffffff).setOrigin(0);
+    this.add.line(0, 0, 98, 442, 165, 375, 0xffffff).setOrigin(0);
+    const photos = this.add.text(165, 325, `take photos
+
+with space or enter
+
+for science and stars`, {
       fontSize: '16px',
       fontFamily: 'font',
+      align: 'center',
     });
-    asteroids.setOrigin(0.5);
+    photos.setOrigin(0.5);
     const pause = this.add.image(984, 40, 'sprites', 'pause');
     pause.on('pointerdown', () => {
       this.scene.launch('PauseScene', {
