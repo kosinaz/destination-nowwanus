@@ -1,5 +1,6 @@
 import Button from './button.js';
 import AsteroidMap from './asteroidMap.js';
+import Profile from './profile.js';
 
 /**
  * Represent the level introduction modal of the level scene.
@@ -33,12 +34,25 @@ export default class MenuScene extends Phaser.Scene {
       fontFamily: 'font',
     });
     title.setOrigin(0.5);
-    const star1 = this.add.image(0, 0, 'sprites', 'star');
-    const star2 = this.add.image(-96, 0, 'sprites', 'star');
-    star2.setScale(0.75);
-    const star3 = this.add.image(96, 0, 'sprites', 'star');
-    star3.setScale(0.75);
-    const stars = this.add.container(0, -80, [star1, star2, star3]);
+    const star1border = this.add.image(0, 0, 'sprites', 'star');
+    const star1 = this.add.image(0, 0, 'sprites', 'staron');
+    star1.setScale(Profile.level[data.level] > 0 ? 1 : 0);
+    const star2border = this.add.image(-96, 0, 'sprites', 'star');
+    star2border.setScale(0.75);
+    const star2 = this.add.image(-96, 0, 'sprites', 'staron');
+    star2.setScale(Profile.level[data.level] > 1 ? 0.75 : 0);
+    const star3border = this.add.image(96, 0, 'sprites', 'star');
+    star3border.setScale(0.75);
+    const star3 = this.add.image(96, 0, 'sprites', 'staron');
+    star3.setScale(Profile.level[data.level] > 2 ? 0.75 : 0);
+    const stars = this.add.container(0, -80, [
+      star1border,
+      star1,
+      star2border,
+      star2,
+      star3border,
+      star3,
+    ]);
     const target =
       this.add.text(0, 0, `Target: ${(levels[data.level].target)} ⚛`, {
         fontSize: '24px',
@@ -147,6 +161,46 @@ export default class MenuScene extends Phaser.Scene {
     const window = this.add.container(512, 304, windowcontent);
     if (!data.from) {
       this.cameras.main.fadeIn(100);
+      if (data.science) {
+        console.log(Profile.level);
+        if (data.science >= levels[data.level].target &&
+          (!Profile.level[data.level] ||
+          Profile.level[data.level] < 1)) {
+          Profile.star += 1;
+          Profile.level[data.level] = 1;
+          this.tweens.add({
+            delay: 500,
+            targets: star1,
+            duration: 150,
+            scale: 1,
+            ease: 'Back',
+          });
+        }
+        if (data.science >= levels[data.level].target * 1.5 &&
+          Profile.level[data.level] < 2) {
+          Profile.star += 1;
+          Profile.level[data.level] = 2;
+          this.tweens.add({
+            delay: 750,
+            targets: star2,
+            duration: 150,
+            scale: 0.75,
+            ease: 'Back',
+          });
+        }
+        if (data.science >= levels[data.level].target * 1.75 &&
+          Profile.level[data.level] < 3) {
+          Profile.star += 1;
+          Profile.level[data.level] = 3;
+          this.tweens.add({
+            delay: 1000,
+            targets: star3,
+            duration: 150,
+            scale: 0.75,
+            ease: 'Back',
+          });
+        }
+      }
     } else if (data.from === 'left') {
       this.tweens.add({
         targets: window,

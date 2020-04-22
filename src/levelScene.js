@@ -152,6 +152,7 @@ export default class LevelScene extends Phaser.Scene {
       this.scene.stop('LevelScene');
       this.scene.start('MenuScene', {
         level: data.level,
+        science: this.science,
       });
     });
     this.photos = 0;

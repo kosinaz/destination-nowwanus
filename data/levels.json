@@ -1,51 +1,51 @@
 [
   {
     "asteroidleft": 2,
-    "target": 20
+    "target": 10
   },
   {
     "asteroiddown": 1,
     "asteroidleft": 1,
-    "target": 600
+    "target": 15
   },
   {
     "asteroiddown": 1,
     "asteroidleft": 2,
-    "target": 900
+    "target": 20
   },
   {
     "asteroiddown": 1,
     "asteroidleft": 3,
-    "target": 900
+    "target": 25
   },
   {
     "asteroiddown": 2,
     "asteroidleft": 2,
-    "target": 1100
+    "target": 30
   },
   {
     "asteroiddown": 1,
     "asteroidleft": 2,
     "asteroidup": 1,
-    "target": 1600
+    "target": 35
   },
   {
     "asteroiddown": 2,
     "asteroidleft": 2,
     "asteroidup": 1,
-    "target": 1700
+    "target": 40
   },
   {
     "asteroiddown": 1,
     "asteroidleft": 3,
     "asteroidup": 2,
-    "target": 1800
+    "target": 45
   },
   {
     "asteroiddown": 1,
     "asteroidleft": 1,
     "asteroidright": 1,
     "asteroidup": 1,
-    "target": 2000
+    "target": 50
   }
 ]
