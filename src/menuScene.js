@@ -28,6 +28,12 @@ export default class MenuScene extends Phaser.Scene {
     const bg = this.add.image(512, 288, 'bg');
     bg.setDisplaySize(1024, 576);
     const levels = this.cache.json.get('levels');
+    let open = 'level';
+    const info = new Button(this, 984, 40, 'sprites', 'info');
+    info.once('click', () => {
+      this.cameras.main.fadeOut(300);
+      open = 'info';
+    });
     const windowbg = this.add.image(0, 0, 'sprites', 'window');
     const title = this.add.text(0, -184, 'Mission ' + (data.level + 1), {
       fontSize: '48px',
@@ -128,10 +134,16 @@ export default class MenuScene extends Phaser.Scene {
       this.cameras.main.fadeOut(300);
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
-      this.scene.start('LevelScene', {
-        level: data.level,
-        map: new AsteroidMap(levels[data.level]),
-      });
+      if (open === 'level') {
+        this.scene.start('LevelScene', {
+          level: data.level,
+          map: new AsteroidMap(levels[data.level]),
+        });
+      } else if (open === 'info') {
+        this.scene.start('InfoScene', {
+          level: data.level,
+        });
+      }
       this.scene.stop();
     });
     if (data.science) {

@@ -250,6 +250,7 @@
                 <false/>
             </struct>
             <key type="filename">sprites/close.png</key>
+            <key type="filename">sprites/info.png</key>
             <key type="filename">sprites/left.png</key>
             <key type="filename">sprites/mission.png</key>
             <key type="filename">sprites/pause.png</key>

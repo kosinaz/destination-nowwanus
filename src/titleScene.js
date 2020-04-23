@@ -33,6 +33,12 @@ export default class TitleScene extends Phaser.Scene {
       fontSize: '16px',
       fontFamily: 'font',
     }).setOrigin(1);
+    let open = 'menu';
+    const info = new Button(this, 984, 40, 'sprites', 'info');
+    info.once('click', () => {
+      this.cameras.main.fadeOut(300);
+      open = 'info';
+    });
     const play = new Button(this, 512, 464, 'sprites', 'playon');
     play.once('click', () => {
       play.disableInteractive();
@@ -52,9 +58,15 @@ export default class TitleScene extends Phaser.Scene {
       }
     });
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      this.scene.start('MenuScene', {
-        level: 0,
-      });
+      if (open === 'menu') {
+        this.scene.start('MenuScene', {
+          level: 0,
+        });
+      } else if (open === 'info') {
+        this.scene.start('InfoScene', {
+          level: 0,
+        });
+      }
     });
   }
 }
