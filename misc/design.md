@@ -20,8 +20,6 @@ Nussaandg, elder, that refers to the old age of the KBOs, and the wisdom they ho
 
 All from the old Powhatan word list from The Historie of Travaile Into Virginia Britannia.
 
-
 Upgrades / Research Projects
 
 Photos / RTGPCO Radioisotope Thermoelectric Generator Power Consumption Optimizations
-
