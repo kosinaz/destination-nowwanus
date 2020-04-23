@@ -23,5 +23,5 @@ All from the old Powhatan word list from The Historie of Travaile Into Virginia 
 
 Upgrades / Research Projects
 
-Photos / RTGPCO Radioisotope Thermoelectric Generator Power Consumption Optimazitaions
+Photos / RTGPCO Radioisotope Thermoelectric Generator Power Consumption Optimizations
 
