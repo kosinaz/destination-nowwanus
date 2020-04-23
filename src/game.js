@@ -5,6 +5,7 @@ import LevelScene from './levelScene.js';
 import InstructionScene from './instructionScene.js';
 import PauseScene from './pauseScene.js';
 import RewindScene from './rewindScene.js';
+import WinScene from './winScene.js';
 
 new Phaser.Game({
   type: Phaser.AUTO,
@@ -29,5 +30,6 @@ new Phaser.Game({
     InstructionScene,
     PauseScene,
     RewindScene,
+    WinScene,
   ],
 });

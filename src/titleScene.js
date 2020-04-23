@@ -1,4 +1,5 @@
 import Button from './button.js';
+import Profile from './profile.js';
 
 /**
  * Represent the title screen of the game.
@@ -39,7 +40,16 @@ export default class TitleScene extends Phaser.Scene {
     });
     this.input.keyboard.on('keydown', (event) => {
       event.preventDefault();
-      this.cameras.main.fadeOut(300);
+      if (event.key === '0') {
+        this.add.text(8, 568, 'invincibility & all levels', {
+          fontSize: '16px',
+          fontFamily: 'font',
+        }).setOrigin(0, 1);
+        Profile.progress = 15;
+        Profile.invincible = true;
+      } else {
+        this.cameras.main.fadeOut(300);
+      }
     });
     this.cameras.main.once('camerafadeoutcomplete', () => {
       this.scene.start('MenuScene', {

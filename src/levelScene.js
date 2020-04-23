@@ -1,3 +1,5 @@
+import Profile from './profile.js';
+
 /**
  * Represent the home screen of the game.
  *
@@ -76,13 +78,15 @@ export default class LevelScene extends Phaser.Scene {
     this.focus.body.setOffset(-144);
     this.asteroids = this.physics.add.group();
     this.physics.add.overlap(this.newhorizons, this.asteroids, () => {
-      this.scene.restart();
-      // this.scene.start('RewindScene', {
-      //   level: data.level,
-      //   map: data.map,
-      //   snaps: snaps,
-      // });
-      // this.scene.stop();
+      if (!Profile.invincible) {
+        this.scene.restart();
+        // this.scene.start('RewindScene', {
+        //   level: data.level,
+        //   map: data.map,
+        //   snaps: snaps,
+        // });
+        // this.scene.stop();
+      }
     });
     this.physics.add.overlap(this.focus, this.asteroids, (focus, asteroid) => {
       if (!asteroid.shot) {
@@ -149,6 +153,13 @@ export default class LevelScene extends Phaser.Scene {
       }
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
+      if (data.level === levels.length - 1) {
+        this.scene.stop('LevelScene');
+        this.scene.start('WinScene', {
+          level: data.level,
+          science: this.science,
+        });
+      }
       this.scene.stop('LevelScene');
       this.scene.start('MenuScene', {
         level: data.level,

@@ -10,3 +10,4 @@ export default class Profile {
 Profile.star = 0;
 Profile.level = [];
 Profile.progress = 0;
+Profile.invincible = false;
