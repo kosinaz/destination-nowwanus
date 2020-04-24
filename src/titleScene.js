@@ -18,11 +18,12 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   /**
-   * Creates the content of the TitleScene.
    *
+   *
+   * @param {*} data
    * @memberof TitleScene
    */
-  create() {
+  create(data) {
     this.cameras.main.fadeIn(100);
     const bg = this.add.image(512, 288, 'bg');
     bg.setDisplaySize(1024, 576);
@@ -61,10 +62,12 @@ export default class TitleScene extends Phaser.Scene {
       if (open === 'menu') {
         this.scene.start('MenuScene', {
           level: 0,
+          music: data.music,
         });
       } else if (open === 'info') {
         this.scene.start('InfoScene', {
           level: 0,
+          music: data.music,
         });
       }
     });

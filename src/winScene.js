@@ -22,6 +22,14 @@ export default class WinScene extends Phaser.Scene {
    */
   create(data) {
     this.cameras.main.fadeIn(3000);
+    if (!data.music.win.isPlaying) {
+      data.music.win.play();
+      this.tweens.add({
+        targets: data.music.win,
+        volume: 1,
+        duration: 2000,
+      });
+    }
     const bg = this.add.image(512, 288, 'bg');
     bg.setDepth(-3);
     this.add.image(490, 262, 'sprites', 'newhorizons');
@@ -31,6 +39,14 @@ export default class WinScene extends Phaser.Scene {
       delay: 15000,
       callback: () => {
         this.cameras.main.fadeOut(3000, 255, 255, 255);
+        this.tweens.add({
+          targets: data.music.win,
+          volume: 0,
+          duration: 2500,
+          onComplete: () => {
+            data.music.win.stop();
+          },
+        });
       },
     });
     const offscreen = new Phaser.Geom.Rectangle(1024, 0, 1, 576);

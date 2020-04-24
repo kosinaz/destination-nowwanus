@@ -56,7 +56,9 @@ export default class LoadScene extends Phaser.Scene {
     this.load.atlas('sprites', 'image/sprites.png', 'image/sprites.json');
     this.load.image('bg', 'image/bg.png');
     this.load.json('levels', 'data/levels.json');
-    // this.load.audio('title', 'audio/title.mp3');
+    this.load.audio('menu', 'audio/Endless-Cyber-Runner.mp3');
+    this.load.audio('level', 'audio/Runaway-Technology.mp3');
+    this.load.audio('win', 'audio/4.2-Light-Years.mp3');
   }
 
   /**
@@ -65,6 +67,21 @@ export default class LoadScene extends Phaser.Scene {
    * @memberof LoadScene
    */
   create() {
-    this.scene.start('TitleScene');
+    const music = {
+      menu: this.sound.add('menu', {
+        loop: true,
+        volume: 0,
+      }),
+      level: this.sound.add('level', {
+        loop: true,
+      }),
+      win: this.sound.add('win', {
+        loop: true,
+        volume: 0,
+      }),
+    };
+    this.scene.start('TitleScene', {
+      music: music,
+    });
   }
 }

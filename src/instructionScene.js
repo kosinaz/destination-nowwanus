@@ -68,6 +68,7 @@ for science and stars`, {
       this.scene.launch('PauseScene', {
         level: data.level,
         from: 'instruction',
+        music: data.music,
       });
       this.scene.pause();
     });

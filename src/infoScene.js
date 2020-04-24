@@ -27,6 +27,14 @@ export default class InfoScene extends Phaser.Scene {
     const bg = this.add.image(512, 288, 'bg');
     bg.setDepth(-3);
     bg.setAlpha(0.10);
+    if (!data.music.menu.isPlaying) {
+      data.music.menu.play();
+      this.tweens.add({
+        targets: data.music.menu,
+        volume: 1,
+        duration: 2000,
+      });
+    }
     this.add.text(16, 16,
         `  In 2026 New Horizons will fly by its second Kuiper Belt Object,
 860626 Nowwanus, provisional designation KBO 2021 KD19.

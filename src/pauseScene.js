@@ -46,10 +46,26 @@ export default class PauseScene extends Phaser.Scene {
     });
     const close = new Button(this, -24, 24, 'sprites', 'close');
     close.once('click', () => {
+      this.tweens.add({
+        targets: data.music.level,
+        volume: 0,
+        duration: 250,
+        onComplete: () => {
+          data.music.level.stop();
+        },
+      });
       this.cameras.main.fadeOut(300);
     });
     this.input.keyboard.on('keydown-ESC', (event) => {
       event.preventDefault();
+      this.tweens.add({
+        targets: data.music.level,
+        volume: 0,
+        duration: 250,
+        onComplete: () => {
+          data.music.level.stop();
+        },
+      });
       this.cameras.main.fadeOut(300);
     });
     const window = this.add.container(512, 288, [windowbg, title, play, close]);
@@ -66,6 +82,7 @@ export default class PauseScene extends Phaser.Scene {
       this.scene.stop('LevelScene');
       this.scene.start('MenuScene', {
         level: data.level,
+        music: data.music,
       });
     });
   }

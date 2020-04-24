@@ -27,6 +27,10 @@ export default class LevelScene extends Phaser.Scene {
     this.target = levels[data.level].target;
     const bg = this.add.image(512, 288, 'bg');
     bg.setDepth(-3);
+    if (!data.music.level.isPlaying) {
+      data.music.level.play();
+      data.music.level.volume = 1;
+    }
     const offscreen = new Phaser.Geom.Rectangle(1024, 0, 1, 576);
     const onscreen = new Phaser.Geom.Rectangle(0, 0, 1025, 576);
     const dustGraphics = this.make.graphics();
@@ -114,6 +118,14 @@ export default class LevelScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 17000,
       callback: () => {
+        this.tweens.add({
+          targets: data.music.level,
+          volume: 0,
+          duration: 250,
+          onComplete: () => {
+            data.music.level.stop();
+          },
+        });
         this.cameras.main.fadeOut(300);
       },
     });
@@ -153,18 +165,20 @@ export default class LevelScene extends Phaser.Scene {
       }
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
+      this.scene.stop('LevelScene');
       if (data.level === levels.length - 1) {
-        this.scene.stop('LevelScene');
         this.scene.start('WinScene', {
           level: data.level,
           science: this.science,
+          music: data.music,
+        });
+      } else {
+        this.scene.start('MenuScene', {
+          level: data.level,
+          science: this.science,
+          music: data.music,
         });
       }
-      this.scene.stop('LevelScene');
-      this.scene.start('MenuScene', {
-        level: data.level,
-        science: this.science,
-      });
     });
     this.photos = 0;
     this.photosmax = 5;
@@ -215,6 +229,7 @@ export default class LevelScene extends Phaser.Scene {
     this.scene.launch('PauseScene', {
       level: data.level,
       from: 'level',
+      music: data.music,
     });
     this.scene.pause();
   }
