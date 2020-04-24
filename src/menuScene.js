@@ -27,21 +27,9 @@ export default class MenuScene extends Phaser.Scene {
   create(data) {
     const bg = this.add.image(512, 288, 'bg');
     bg.setDisplaySize(1024, 576);
-    if (!data.music.menu.isPlaying) {
-      data.music.menu.play();
-      this.tweens.add({
-        targets: data.music.menu,
-        volume: 1,
-        duration: 2000,
-      });
-    }
     const levels = this.cache.json.get('levels');
-    let open = 'level';
-    const info = new Button(this, 984, 40, 'sprites', 'info');
-    info.once('click', () => {
-      this.cameras.main.fadeOut(300);
-      open = 'info';
-    });
+    this.scene.get('MusicScene').play(0);
+    this.scene.run('InfoScene');
     const windowbg = this.add.image(0, 0, 'sprites', 'window');
     const title = this.add.text(0, -184, 'Mission ' + (data.level + 1), {
       fontSize: '48px',
@@ -142,19 +130,11 @@ export default class MenuScene extends Phaser.Scene {
       this.cameras.main.fadeOut(300);
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
-      if (open === 'level') {
-        data.music.menu.stop();
-        this.scene.start('LevelScene', {
-          level: data.level,
-          map: new AsteroidMap(levels[data.level]),
-          music: data.music,
-        });
-      } else if (open === 'info') {
-        this.scene.start('InfoScene', {
-          level: data.level,
-          music: data.music,
-        });
-      }
+      this.scene.start('LevelScene', {
+        level: data.level,
+        map: new AsteroidMap(levels[data.level]),
+      });
+      this.scene.stop('InfoScene');
       this.scene.stop();
     });
     if (data.science) {
@@ -271,7 +251,6 @@ export default class MenuScene extends Phaser.Scene {
         this.scene.start('MenuScene', {
           level: data.level + 1,
           from: 'right',
-          music: data.music,
         });
       },
     });
@@ -296,7 +275,6 @@ export default class MenuScene extends Phaser.Scene {
         this.scene.start('MenuScene', {
           level: data.level - 1,
           from: 'left',
-          music: data.music,
         });
       },
     });

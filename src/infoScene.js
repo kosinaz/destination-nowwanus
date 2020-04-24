@@ -22,45 +22,56 @@ export default class InfoScene extends Phaser.Scene {
    * @param {*} data
    * @memberof InfoScene
    */
-  create(data) {
-    this.cameras.main.fadeIn(300);
-    const bg = this.add.image(512, 288, 'bg');
-    bg.setDepth(-3);
-    bg.setAlpha(0.10);
-    if (!data.music.menu.isPlaying) {
-      data.music.menu.play();
-      this.tweens.add({
-        targets: data.music.menu,
-        volume: 1,
-        duration: 2000,
-      });
-    }
-    this.add.text(16, 16,
-        `  In 2026 New Horizons will fly by its second Kuiper Belt Object,
-860626 Nowwanus, provisional designation KBO 2021 KD19.
+  create() {
+    let opened = false;
+    const info = new Button(this, 40, 40, 'sprites', 'info');
+    info.on('click', () => {
+      if (!opened) {
+        window.visible = true;
+        opened = true;
+        this.tweens.add({
+          duration: 150,
+          targets: window,
+          y: 328,
+        });
+      } else {
+        opened = false;
+        this.tweens.add({
+          duration: 150,
+          targets: window,
+          y: 904,
+          onComplete: () => {
+            window.visible = false;
+          },
+        });
+      }
+    });
+    const bg = this.add.image(0, 0, 'sprites', 'panel').setAlpha(0.99);
+    const div1 = this.add.text(-496, -216,
+        `  In 2026 New Horizons will fly by its second Kuiper Belt Object, ` +
+`Nowwanus.
 
-  You have to navigate through the asteroid fields using the asteroid location
+  You have to navigate through the asteroid fields using the asteroid ` +
+`location 
 predictions based on the space dust analytics of the VBSDC subsystem.
 
-  You also have take valuable pictures of the asteroids with the Ralph 
-to maintain our funding and allow us to invest in researches related 
-to the operation of the probe.
+  You also have take valuable pictures of the asteroids with the Ralph
+to keep us funded and let us invest in different research projects.
 
-  Better ways to use the RTG will grant us more power to take pictures, ` +
-`better image compression for the Ralph
-will give us bigger pictures, and better analytics for the VBSDC ` +
-`will let us notice the asteroid fields earlier,
+  Better ways to use the RTG will grant us more power to take pictures,
+better image compression for the Ralph will give us bigger pictures,
+and better analytics for the VBSDC will let us notice the asteroid earlier,
 providing us more time to find a way through them.`, {
-          fontSize: '14px',
+          fontSize: '16px',
           fontFamily: 'font2',
           color: 'lightgray',
-          lineSpacing: 8,
+          lineSpacing: 6,
         }).setOrigin(0);
-    this.add.text(512, 374,
+    const div2 = this.add.text(0, 116,
         `Art by CraftPix and Zoltan Kosina
 Fonts by Typodermic Fonts
 Music by Eric Matyas www.soundimage.org`, {
-          fontSize: '14px',
+          fontSize: '16px',
           fontFamily: 'font2',
           color: 'lightgray',
           align: 'center',
@@ -73,7 +84,7 @@ Music by Eric Matyas www.soundimage.org`, {
       fontSize: '16px',
       fontFamily: 'font',
     }).setOrigin(0, 1);
-    const rtg = this.add.container(15, -70, [rtgline, rtgtext]);
+    const rtg = this.add.container(10, -70, [rtgline, rtgtext]);
     const ralphline = this.add.line(0, 0, 0, 0, 25, -25, 0xffffff)
         .setOrigin(0);
     const ralphtext = this.add.text(28, -28, 'Ralph', {
@@ -88,14 +99,13 @@ Music by Eric Matyas www.soundimage.org`, {
       fontFamily: 'font',
     }).setOrigin(0);
     const vbsdc = this.add.container(20, 70, [vbsdcline, vbsdctext]);
-    this.add.container(780, 120, [newhorizons, rtg, ralph, vbsdc]);
-    this.cameras.main.on('camerafadeoutcomplete', () => {
-      this.scene.start('MenuScene', data);
-    });
-    const play = new Button(this, 512, 528, 'sprites', 'playon');
-    play.once('click', () => {
-      play.disableInteractive();
-      this.cameras.main.fadeOut(300);
-    });
+    const illustration = this.add.container(330, -90, [
+      newhorizons,
+      rtg,
+      ralph,
+      vbsdc,
+    ]);
+    const window = this.add.container(512, 904, [bg, div1, div2, illustration]);
+    window.visible = false;
   }
 }

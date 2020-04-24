@@ -67,21 +67,6 @@ export default class LoadScene extends Phaser.Scene {
    * @memberof LoadScene
    */
   create() {
-    const music = {
-      menu: this.sound.add('menu', {
-        loop: true,
-        volume: 0,
-      }),
-      level: this.sound.add('level', {
-        loop: true,
-      }),
-      win: this.sound.add('win', {
-        loop: true,
-        volume: 0,
-      }),
-    };
-    this.scene.start('TitleScene', {
-      music: music,
-    });
+    this.scene.start('TitleScene');
   }
 }

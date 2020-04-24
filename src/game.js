@@ -7,6 +7,7 @@ import PauseScene from './pauseScene.js';
 import RewindScene from './rewindScene.js';
 import WinScene from './winScene.js';
 import InfoScene from './infoScene.js';
+import MusicScene from './musicScene.js';
 
 new Phaser.Game({
   type: Phaser.AUTO,
@@ -33,5 +34,6 @@ new Phaser.Game({
     RewindScene,
     WinScene,
     InfoScene,
+    MusicScene,
   ],
 });

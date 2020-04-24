@@ -232,6 +232,36 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">sprites/audiobar.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,8,7,16</rect>
+                <key>scale9Paddings</key>
+                <rect>4,8,7,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">sprites/audioborder.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>13,10,27,20</rect>
+                <key>scale9Paddings</key>
+                <rect>13,10,27,20</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">sprites/blue.png</key>
             <key type="filename">sprites/red.png</key>
             <key type="filename">sprites/yellow.png</key>
@@ -253,6 +283,7 @@
             <key type="filename">sprites/info.png</key>
             <key type="filename">sprites/left.png</key>
             <key type="filename">sprites/mission.png</key>
+            <key type="filename">sprites/music.png</key>
             <key type="filename">sprites/pause.png</key>
             <key type="filename">sprites/photocounter.png</key>
             <key type="filename">sprites/play.png</key>
@@ -343,6 +374,21 @@
                 <rect>37,67,73,133</rect>
                 <key>scale9Paddings</key>
                 <rect>37,67,73,133</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">sprites/panel.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>256,124,512,248</rect>
+                <key>scale9Paddings</key>
+                <rect>256,124,512,248</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

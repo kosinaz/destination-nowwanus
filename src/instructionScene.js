@@ -1,3 +1,5 @@
+import Button from './button.js';
+
 /**
  * Represent the instruction screen of the game.
  *
@@ -64,28 +66,28 @@ for science and stars`, {
     });
     photos.setOrigin(0.5);
     const pause = this.add.image(984, 40, 'sprites', 'pause');
+    pause.setInteractive();
     pause.on('pointerdown', () => {
-      this.scene.launch('PauseScene', {
+      this.scene.run('PauseScene', {
         level: data.level,
         from: 'instruction',
-        music: data.music,
       });
       this.scene.pause();
     });
-    this.time.addEvent({
-      delay: 300,
-      callback: () => {
-        pause.setInteractive();
-        this.input.on('pointerup', () => {
-          this.scene.resume('LevelScene');
-          this.scene.stop();
-        });
-        this.input.keyboard.on('keyup', (event) => {
-          event.preventDefault();
-          this.scene.resume('LevelScene');
-          this.scene.stop();
-        });
-      },
+    const play = new Button(this, 512, 528, 'sprites', 'playon');
+    play.once('click', () => {
+      this.scene.resume('LevelScene');
+      this.scene.stop();
+    });
+    this.input.keyboard.on('keydown-ENTER', (event) => {
+      event.preventDefault();
+      this.scene.resume('LevelScene');
+      this.scene.stop();
+    });
+    this.input.keyboard.on('keydown-SPACE', (event) => {
+      event.preventDefault();
+      this.scene.resume('LevelScene');
+      this.scene.stop();
     });
   }
 }
