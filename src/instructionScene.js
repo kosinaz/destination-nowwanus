@@ -43,26 +43,24 @@ export default class InstructionScene extends Phaser.Scene {
     bg.mask = maskgraphics.createGeometryMask();
     bg.mask.setInvertAlpha();
     this.add.line(0, 0, 430, 216, 472, 258, 0xffffff).setOrigin(0);
-    const newhorizons = this.add.text(430, 166, `control the new horizons
-
-with wasd or arrows
-
+    const newhorizons = this.add.text(430, 166, `Control the New Horizons
+with WASD or arrows
 to evade the asteroids`, {
-      fontSize: '16px',
-      fontFamily: 'font',
+      fontSize: '20px',
+      fontFamily: 'font2',
       align: 'center',
+      lineSpacing: 8,
     });
     newhorizons.setOrigin(0.5);
     this.add.line(0, 0, 75, 185, 165, 275, 0xffffff).setOrigin(0);
     this.add.line(0, 0, 98, 442, 165, 375, 0xffffff).setOrigin(0);
-    const photos = this.add.text(165, 325, `take photos
-
-with space or enter
-
+    const photos = this.add.text(165, 325, `Take photos
+with Space or Enter
 for science and stars`, {
-      fontSize: '16px',
-      fontFamily: 'font',
+      fontSize: '20px',
+      fontFamily: 'font2',
       align: 'center',
+      lineSpacing: 8,
     });
     photos.setOrigin(0.5);
     const pause = this.add.image(984, 40, 'sprites', 'pause');

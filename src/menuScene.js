@@ -62,7 +62,7 @@ export default class MenuScene extends Phaser.Scene {
     const target =
       this.add.text(0, 0, `Target: ${(levels[data.level].target)} ⚛`, {
         fontSize: '24px',
-        fontFamily: 'font',
+        fontFamily: 'font2',
       });
     target.setOrigin(0.5);
     const warnings = this.add.container(0, 128);

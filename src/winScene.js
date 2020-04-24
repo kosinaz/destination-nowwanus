@@ -54,19 +54,18 @@ export default class WinScene extends Phaser.Scene {
       },
       lifespan: 15000,
     }]);
-    this.add.text(16, 16, `in 2026 nasa\'s new horizons probe
-
+    this.add.text(16, 16, `In 2026 NASA\'s New Horizons probe
 made the most distant flyby in space history`, {
-      fontSize: '16px',
-      fontFamily: 'font',
+      fontSize: '20px',
+      fontFamily: 'font2',
+      lineSpacing: 8,
     }).setOrigin(0);
-    const mid = this.add.text(16, 116, `after a dramatic 20-year long journey
-
-new horizons reached it's marvelous destination: 
-
-nowwanus`, {
-      fontSize: '16px',
-      fontFamily: 'font',
+    const mid = this.add.text(16, 116, `After a dramatic 20-year long journey
+New Horizons reached it's marvelous destination: 
+Nowwanus`, {
+      fontSize: '20px',
+      fontFamily: 'font2',
+      lineSpacing: 8,
     }).setOrigin(0).setAlpha(0);
     this.tweens.add({
       delay: 5000,
@@ -74,13 +73,12 @@ nowwanus`, {
       alpha: 1,
       duration: 1000,
     });
-    const bottom = this.add.text(16, 468, `but this is still not the end,
-
-beyond the outer edge of the kuiper belt,
-
+    const bottom = this.add.text(16, 468, `But this is still not the end.
+Beyond the outer edge of the Kuiper Belt,
 the next destination awaits...`, {
-      fontSize: '16px',
-      fontFamily: 'font',
+      fontSize: '20px',
+      fontFamily: 'font2',
+      lineSpacing: 8,
     }).setOrigin(0).setAlpha(0);
     this.tweens.add({
       delay: 10000,
