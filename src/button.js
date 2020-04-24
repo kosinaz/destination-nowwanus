@@ -33,6 +33,7 @@ export default class Button extends Phaser.GameObjects.Container {
     });
     this.on('pointerup', () => {
       if (this.down && !this.tweening) {
+        this.emit('click');
         this.tweening = true;
         scene.tweens.add({
           targets: this,
@@ -41,7 +42,6 @@ export default class Button extends Phaser.GameObjects.Container {
           duration: 70,
           yoyo: true,
           onComplete: () => {
-            this.emit('click');
             this.tweening = false;
           },
         });

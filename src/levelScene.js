@@ -28,6 +28,8 @@ export default class LevelScene extends Phaser.Scene {
     const bg = this.add.image(512, 288, 'bg');
     bg.setDepth(-3);
     this.scene.get('MusicScene').play(1);
+    this.scene.run('PauseScene', data);
+    this.scene.pause();
     const offscreen = new Phaser.Geom.Rectangle(1024, 0, 1, 576);
     const onscreen = new Phaser.Geom.Rectangle(0, 0, 1025, 576);
     const dustGraphics = this.make.graphics();
@@ -81,12 +83,6 @@ export default class LevelScene extends Phaser.Scene {
     this.physics.add.overlap(this.newhorizons, this.asteroids, () => {
       if (!Profile.invincible) {
         this.scene.restart();
-        // this.scene.start('RewindScene', {
-        //   level: data.level,
-        //   map: data.map,
-        //   snaps: snaps,
-        // });
-        // this.scene.stop();
       }
     });
     this.physics.add.overlap(this.focus, this.asteroids, (focus, asteroid) => {
@@ -118,29 +114,6 @@ export default class LevelScene extends Phaser.Scene {
         this.cameras.main.fadeOut(300);
       },
     });
-    // const snaps = [];
-    // this.time.addEvent({
-    //   delay: 300,
-    //   callback: () => {
-    //     this.game.renderer.snapshot((snap) => {
-    //       snaps.unshift(snap);
-    //     });
-    //   },
-    //   loop: true,
-    // });
-    const pause = this.add.image(984, 40, 'sprites', 'pause');
-    pause.setInteractive();
-    pause.on('pointerdown', () => {
-      this.pauseLevel(data);
-    });
-    this.input.keyboard.on('keydown-ESC', (event) => {
-      event.preventDefault();
-      this.pauseLevel(data);
-    });
-    this.input.keyboard.on('keydown-PAUSE', (event) => {
-      event.preventDefault();
-      this.pauseLevel(data);
-    });
     this.input.keyboard.on('keydown-ENTER', (event) => {
       event.preventDefault();
       if (this.photos < this.photosmax) {
@@ -154,17 +127,18 @@ export default class LevelScene extends Phaser.Scene {
       }
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
-      this.scene.stop('LevelScene');
       if (data.level === levels.length - 1) {
         this.scene.start('WinScene', {
           level: data.level,
           science: this.science,
         });
+        this.scene.stop('LevelScene');
       } else {
         this.scene.start('MenuScene', {
           level: data.level,
           science: this.science,
         });
+        this.scene.stop('LevelScene');
       }
     });
     this.photos = 0;
@@ -183,8 +157,6 @@ export default class LevelScene extends Phaser.Scene {
       this.add.image(76 + (this.photos - 1) * 16, 512, 'sprites', 'frame')
           .setDepth(-1);
     });
-    this.scene.run('InstructionScene', data);
-    this.scene.pause();
     this.science = 0;
     const progressborder = this.add.image(0, 0, 'sprites', 'progressborder');
     this.progressbar = this.add.image(0, 160, 'sprites', 'progressbar');
@@ -193,31 +165,17 @@ export default class LevelScene extends Phaser.Scene {
       fontSize: '24px',
       fontFamily: 'font',
     });
-    this.add.container(88, 100, [
+    this.add.container(96, 164, [
       progressborder,
       this.progressbar,
       this.progresscounter,
       progressoverlay,
     ]);
-    this.progressmask = this.add.image(88, 100, 'sprites', 'progressbar');
+    this.progressmask = this.add.image(96, 164, 'sprites', 'progressbar');
     this.progressmask.visible = false;
     this.progressbar.mask =
       new Phaser.Display.Masks.BitmapMask(this, this.progressmask);
     this.progresscounter.setOrigin(1, 0.5);
-  }
-
-  /**
-   *
-   *
-   * @param {*} data
-   * @memberof LevelScene
-   */
-  pauseLevel(data) {
-    this.scene.launch('PauseScene', {
-      level: data.level,
-      from: 'level',
-    });
-    this.scene.pause();
   }
 
   /**
@@ -258,6 +216,9 @@ export default class LevelScene extends Phaser.Scene {
    * @memberof LevelScene
    */
   update() {
+    if (!this.newhorizons.body) {
+      return;
+    }
     this.newhorizons.setVelocity(0);
     if (this.keys.W.isDown || this.keys.UP.isDown) {
       this.newhorizons.setVelocityY(-this.newhorizons.speed);

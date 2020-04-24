@@ -19,7 +19,6 @@ export default class InfoScene extends Phaser.Scene {
   /**
    * Creates the content of the InfoScene.
    *
-   * @param {*} data
    * @memberof InfoScene
    */
   create() {
