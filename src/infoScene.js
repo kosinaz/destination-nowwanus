@@ -44,7 +44,7 @@ better analytics for the VBSDC will make us notice the asteroids earlier,
 providing us more time to find a way between them.`, {
           fontSize: '14px',
           fontFamily: 'font2',
-          color: 'gray',
+          color: 'lightgray',
         }).setOrigin(0);
     this.add.text(512, 268,
         `Art
@@ -64,7 +64,7 @@ Endless Cyber Runner, Runaway Technology, 4.2 Light Years` +
 ` by Eric Matyas www.soundimage.org`, {
           fontSize: '14px',
           fontFamily: 'font2',
-          color: 'gray',
+          color: 'lightgray',
           align: 'center',
         }).setOrigin(0.5, 0);
     const newhorizons = this.add.image(0, 0, 'sprites', 'newhorizonstitle');
