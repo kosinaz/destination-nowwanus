@@ -29,6 +29,7 @@ export default class MenuScene extends Phaser.Scene {
     bg.setDisplaySize(1024, 576);
     const levels = this.cache.json.get('levels');
     this.scene.get('MusicScene').play(0);
+    this.scene.run('SelectScene', data);
     this.scene.run('InfoScene');
     const windowbg = this.add.image(0, 0, 'sprites', 'window');
     const title = this.add.text(0, -184, 'Mission ' + (data.level + 1), {
@@ -136,6 +137,7 @@ export default class MenuScene extends Phaser.Scene {
         map: new AsteroidMap(levels[data.level]),
       });
       this.scene.stop('InfoScene');
+      this.scene.stop('SelectScene');
       this.scene.stop();
     });
     if (data.science) {
@@ -184,37 +186,36 @@ export default class MenuScene extends Phaser.Scene {
     if (data.level > 0) {
       const left = new Button(this, -96, 0, 'sprites', 'left');
       left.once('click', () => {
-        this.previousLevel(window, data);
+        this.previousLevel(data);
       });
       buttons.add(left);
-      this.input.keyboard.on('keydown-LEFT', (event) => {
+      this.input.keyboard.once('keydown-LEFT', (event) => {
         event.preventDefault();
-        this.previousLevel(window, data);
+        this.previousLevel(data);
       });
     }
     if (data.level < levels.length - 1) {
-      if (Profile.progress > data.level) {
-        const right = new Button(this, 96, 0, 'sprites', 'right');
-        right.once('click', () => {
-          this.nextLevel(window, data);
-        });
-        buttons.add(right);
-        this.input.keyboard.on('keydown-RIGHT', (event) => {
-          event.preventDefault();
-          this.nextLevel(window, data);
-        });
+      const right = new Button(this, 96, 0, 'sprites', 'right');
+      right.once('click', () => {
+        this.nextLevel(data);
+      });
+      buttons.add(right);
+      if (Profile.progress <= data.level) {
+        right.lock();
       } else {
-        const right = this.add.image(96, 0, 'sprites', 'lock');
-        buttons.add(right);
+        this.input.keyboard.once('keydown-RIGHT', (event) => {
+          event.preventDefault();
+          this.nextLevel(data);
+        });
       }
     }
     const windowcontent = [windowbg, title, stars, target, warnings, buttons];
-    const window = this.add.container(512, 304, windowcontent);
+    this.window = this.add.container(512, 304, windowcontent);
     if (!data.from) {
       this.cameras.main.fadeIn(100);
     } else if (data.from === 'left') {
       this.tweens.add({
-        targets: window,
+        targets: this.window,
         duration: 150,
         x: {
           from: -276,
@@ -223,7 +224,7 @@ export default class MenuScene extends Phaser.Scene {
       });
     } else if (data.from === 'right') {
       this.tweens.add({
-        targets: window,
+        targets: this.window,
         duration: 150,
         x: {
           from: 1300,
@@ -236,13 +237,35 @@ export default class MenuScene extends Phaser.Scene {
   /**
    *
    *
-   * @param {*} window
+   * @param {*} level
    * @param {*} data
    * @memberof MenuScene
    */
-  nextLevel(window, data) {
+  setLevel(level, data) {
     this.tweens.add({
-      targets: window,
+      targets: this.window,
+      duration: 150,
+      x: {
+        from: 512,
+        to: data.level > level ? 1300 : -276,
+      },
+      onComplete: () => {
+        this.scene.start('MenuScene', {
+          level: level,
+          from: data.level > level ? 'left' : 'right',
+        });
+      },
+    });
+  }
+  /**
+   *
+   *
+   * @param {*} data
+   * @memberof MenuScene
+   */
+  nextLevel(data) {
+    this.tweens.add({
+      targets: this.window,
       duration: 150,
       x: {
         from: 512,
@@ -260,13 +283,12 @@ export default class MenuScene extends Phaser.Scene {
   /**
    *
    *
-   * @param {*} window
    * @param {*} data
    * @memberof MenuScene
    */
-  previousLevel(window, data) {
+  previousLevel(data) {
     this.tweens.add({
-      targets: window,
+      targets: this.window,
       duration: 150,
       x: {
         from: 512,

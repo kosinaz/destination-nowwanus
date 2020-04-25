@@ -6,6 +6,7 @@ import PauseScene from './pauseScene.js';
 import WinScene from './winScene.js';
 import InfoScene from './infoScene.js';
 import MusicScene from './musicScene.js';
+import SelectScene from './selectScene.js';
 
 new Phaser.Game({
   type: Phaser.AUTO,
@@ -31,5 +32,6 @@ new Phaser.Game({
     WinScene,
     InfoScene,
     MusicScene,
+    SelectScene,
   ],
 });
