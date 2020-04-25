@@ -203,7 +203,7 @@ export default class LevelScene extends Phaser.Scene {
     this.progresscounter.setOrigin(1, 0.5);
     const timeborder = this.add.image(0, 0, 'sprites', 'timeborder');
     this.timebar = this.add.image(
-        Profile.timeleft / 60000 * 206 - 206, 0, 'sprites', 'timebar'
+        Profile.timeleft / 60000 * 206 - 206, 0, 'sprites', 'timebar',
     );
     this.timecounter = this.add.text(0, 12, '', {
       fontSize: '24px',
