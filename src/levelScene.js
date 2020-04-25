@@ -64,33 +64,35 @@ export default class LevelScene extends Phaser.Scene {
     });
     this.focus.lineStyle(3, 0xffff00, 0.5);
     this.focus.beginPath();
-    this.focus.moveTo(-144, -128);
-    this.focus.lineTo(-144, -144);
-    this.focus.lineTo(-128, -144);
-    this.focus.moveTo(-144, 128);
-    this.focus.lineTo(-144, 144);
-    this.focus.lineTo(-128, 144);
-    this.focus.moveTo(144, -128);
-    this.focus.lineTo(144, -144);
-    this.focus.lineTo(128, -144);
-    this.focus.moveTo(144, 128);
-    this.focus.lineTo(144, 144);
-    this.focus.lineTo(128, 144);
+    this.focus.moveTo(-120 - Profile.range * 24, -104 - Profile.range * 24);
+    this.focus.lineTo(-120 - Profile.range * 24, -120 - Profile.range * 24);
+    this.focus.lineTo(-104 - Profile.range * 24, -120 - Profile.range * 24);
+    this.focus.moveTo(-120 - Profile.range * 24, 104 + Profile.range * 24);
+    this.focus.lineTo(-120 - Profile.range * 24, 120 + Profile.range * 24);
+    this.focus.lineTo(-104 - Profile.range * 24, 120 + Profile.range * 24);
+    this.focus.moveTo(120 + Profile.range * 24, -104 - Profile.range * 24);
+    this.focus.lineTo(120 + Profile.range * 24, -120 - Profile.range * 24);
+    this.focus.lineTo(104 + Profile.range * 24, -120 - Profile.range * 24);
+    this.focus.moveTo(120 + Profile.range * 24, 104 + Profile.range * 24);
+    this.focus.lineTo(120 + Profile.range * 24, 120 + Profile.range * 24);
+    this.focus.lineTo(104 + Profile.range * 24, 120 + Profile.range * 24);
     this.focus.strokePath();
     this.physics.world.enable(this.focus);
-    this.focus.body.setSize(288, 288);
-    this.focus.body.setOffset(-144);
+    this.focus.body.setSize(240 + Profile.range * 48, 240 + Profile.range * 48);
+    this.focus.body.setOffset(-120 - Profile.range * 24);
     this.asteroids = this.physics.add.group();
     this.physics.add.overlap(this.newhorizons, this.asteroids, () => {
       if (!Profile.invincible) {
         if (Profile.timeleft < 100) {
           const levels = this.cache.json.get('levels');
           Profile.timeleft = Profile.time * 60000;
+          this.scene.stop('PauseScene');
           this.scene.start('LevelScene', {
             level: data.level,
             map: new AsteroidMap(levels[data.level]),
           });
         } else {
+          this.scene.stop('PauseScene');
           this.scene.restart();
         }
       }
@@ -132,7 +134,8 @@ export default class LevelScene extends Phaser.Scene {
           return;
         }
         Profile.timeleft -= 100,
-        this.timebar.x = ~~(--Profile.timeleft / 60000 * 206 - 206);
+        this.timebar.x =
+          ~~(--Profile.timeleft / (60000 * Profile.time) * 206 - 206);
         const minutes = ~~(Profile.timeleft / 60000);
         const seconds = ~~((Profile.timeleft % 60000) / 1000);
         this.timecounter.text =
@@ -141,24 +144,26 @@ export default class LevelScene extends Phaser.Scene {
     });
     this.input.keyboard.on('keydown-ENTER', (event) => {
       event.preventDefault();
-      if (this.photos < this.photosmax) {
+      if (this.photos < Profile.photo * 3) {
         this.takePicture();
       }
     });
     this.input.keyboard.on('keydown-SPACE', (event) => {
       event.preventDefault();
-      if (this.photos < this.photosmax) {
+      if (this.photos < Profile.photo * 3) {
         this.takePicture();
       }
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
       if (data.level === levels.length - 1) {
+        this.scene.stop('PauseScene');
         this.scene.start('WinScene', {
           level: data.level,
           science: this.science,
         });
         this.scene.stop('LevelScene');
       } else {
+        this.scene.stop('PauseScene');
         this.scene.start('MenuScene', {
           level: data.level,
           science: this.science,
@@ -167,18 +172,18 @@ export default class LevelScene extends Phaser.Scene {
       }
     });
     this.photos = 0;
-    this.photosmax = 5;
     this.add.image(76, 512, 'sprites', 'frame').setDepth(-1);
     this.add.image(40, 536, 'sprites', 'photocounter');
-    this.photocounter = this.add.text(40, 536, this.photosmax - this.photos, {
-      fontSize: '24px',
-      fontFamily: 'font',
-    });
+    this.photocounter =
+      this.add.text(40, 536, Profile.photo * 3 - this.photos, {
+        fontSize: '24px',
+        fontFamily: 'font',
+      });
     this.photocounter.setOrigin(0.5);
     this.textures.on('addtexture', (photo) => {
       this.cameras.main.flash(50, 64, 64, 64);
       this.add.image(76 + (this.photos - 1) * 16, 512, photo)
-          .setScale(0.25).setDepth(-1);
+          .setDisplaySize(72, 72).setDepth(-1);
       this.add.image(76 + (this.photos - 1) * 16, 512, 'sprites', 'frame')
           .setDepth(-1);
     });
@@ -203,7 +208,10 @@ export default class LevelScene extends Phaser.Scene {
     this.progresscounter.setOrigin(1, 0.5);
     const timeborder = this.add.image(0, 0, 'sprites', 'timeborder');
     this.timebar = this.add.image(
-        Profile.timeleft / 60000 * 206 - 206, 0, 'sprites', 'timebar',
+        Profile.timeleft / (Profile.time * 60000) * 206 - 206,
+        0,
+        'sprites',
+        'timebar',
     );
     this.timecounter = this.add.text(0, 12, '', {
       fontSize: '24px',
@@ -231,29 +239,40 @@ export default class LevelScene extends Phaser.Scene {
    */
   takePicture() {
     const focus = this.focus.body.getBounds({});
-    this.game.renderer.snapshotArea(focus.x, focus.y, 288, 288, (image) => {
-      this.photos += 1;
-      this.textures.addImage('photo' + Phaser.Math.RND.uuid(), image);
-      this.photocounter.text = this.photosmax - this.photos;
-      this.physics.overlapRect(focus.x, focus.y, 288, 288).forEach((body) => {
-        if (this.asteroids.contains(body.gameObject) &&
-          !body.gameObject.shot) {
-          body.gameObject.shot = true;
-          body.gameObject.infocus.visible = false;
-          this.science += 1;
-          this.progresscounter.text = this.science + '⚛';
-          let y = 160 - ~~((this.science / this.target) * 92);
-          // eslint-disable-next-line new-cap
-          y = Phaser.Math.Clamp(y, 0, 160);
-          this.tweens.add({
-            targets: this.progressbar,
-            y: y,
-            ease: 'Quad',
-            duration: 300,
+    this.game.renderer.snapshotArea(
+        focus.x,
+        focus.y,
+        240 + Profile.range * 48,
+        240 + Profile.range * 48,
+        (image) => {
+          this.photos += 1;
+          this.textures.addImage('photo' + Phaser.Math.RND.uuid(), image);
+          this.photocounter.text = Profile.photo * 3 - this.photos;
+          this.physics.overlapRect(
+              focus.x,
+              focus.y,
+              240 + Profile.range * 48,
+              240 + Profile.range * 48,
+          ).forEach((body) => {
+            if (this.asteroids.contains(body.gameObject) &&
+              !body.gameObject.shot) {
+              body.gameObject.shot = true;
+              body.gameObject.infocus.visible = false;
+              this.science += 1;
+              this.progresscounter.text = this.science + '⚛';
+              let y = 160 - ~~((this.science / this.target) * 92);
+              // eslint-disable-next-line new-cap
+              y = Phaser.Math.Clamp(y, 0, 160);
+              this.tweens.add({
+                targets: this.progressbar,
+                y: y,
+                ease: 'Quad',
+                duration: 300,
+              });
+            }
           });
-        }
-      });
-    });
+        },
+    );
   }
 
   /**
@@ -279,9 +298,17 @@ export default class LevelScene extends Phaser.Scene {
       this.newhorizons.setVelocityX(this.newhorizons.speed);
     }
     // eslint-disable-next-line new-cap
-    const focusx = Phaser.Math.Clamp(this.newhorizons.x + 22, 144, 880);
+    const focusx = Phaser.Math.Clamp(
+        this.newhorizons.x + 22,
+        120 + Profile.range * 24,
+        904 - Profile.range * 24,
+    );
     // eslint-disable-next-line new-cap
-    const focusy = Phaser.Math.Clamp(this.newhorizons.y + 26, 144, 432);
+    const focusy = Phaser.Math.Clamp(
+        this.newhorizons.y + 26,
+        120 + Profile.range * 24,
+        456 - Profile.range * 24,
+    );
     this.focus.setPosition(focusx, focusy);
     this.asteroids.getChildren().forEach((asteroid) => {
       if (asteroid.body.touching.none) {
