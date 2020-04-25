@@ -287,6 +287,7 @@
             <key type="filename">sprites/pause.png</key>
             <key type="filename">sprites/photocounter.png</key>
             <key type="filename">sprites/play.png</key>
+            <key type="filename">sprites/replay.png</key>
             <key type="filename">sprites/right.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>

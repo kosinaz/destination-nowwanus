@@ -44,8 +44,10 @@ to evade the asteroids`, {
       newhorizonsline,
       newhorizonstext,
     ]);
-    const photosline = this.add.line(0, 0, -48, -98, 0, -50, 0xffffff);
-    photosline.setOrigin(0);
+    const photosline1 = this.add.line(0, 0, -48, -98, 0, -50, 0xffffff);
+    photosline1.setOrigin(0);
+    const photosline2 = this.add.line(0, 0, -67, 117, 0, 50, 0xffffff);
+    photosline2.setOrigin(0);
     const photostext = this.add.text(0, 0, `Take photos
 with Space or Enter
 for science and stars`, {
@@ -55,7 +57,11 @@ for science and stars`, {
       lineSpacing: 8,
     });
     photostext.setOrigin(0.5);
-    const photoshint = this.add.container(165, 325, [photosline, photostext]);
+    const photoshint = this.add.container(165, 325, [
+      photosline1,
+      photosline2,
+      photostext,
+    ]);
     const pause = new Button(this, 40, 40, 'sprites', 'pause');
     pause.on('click', () => {
       if (!this.opened) {
@@ -161,6 +167,7 @@ for science and stars`, {
     this.maskgraphics = this.make.graphics();
     this.maskgraphics.fillCircle(newhorizons.x + 24, newhorizons.y + 24, 50);
     this.maskgraphics.fillCircle(0, 64, 200);
+    this.maskgraphics.fillCircle(70, 506, 70);
     this.bg.mask = this.maskgraphics.createGeometryMask();
     this.bg.mask.setInvertAlpha();
     this.newhorizonshint.x = newhorizons.x - 58;
