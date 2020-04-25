@@ -130,6 +130,7 @@ export default class MenuScene extends Phaser.Scene {
       this.cameras.main.fadeOut(300);
     });
     this.cameras.main.on('camerafadeoutcomplete', () => {
+      Profile.timeleft = Profile.time * 60000;
       this.scene.start('LevelScene', {
         level: data.level,
         map: new AsteroidMap(levels[data.level]),

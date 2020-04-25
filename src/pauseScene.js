@@ -1,5 +1,6 @@
 import Button from './button.js';
 import AsteroidMap from './asteroidMap.js';
+import Profile from './profile.js';
 
 /**
  * Represent the pause modal of the level scene.
@@ -29,9 +30,24 @@ export default class PauseScene extends Phaser.Scene {
     this.bg.fillStyle(0x000000);
     this.bg.fillRect(0, 0, 1024, 576);
     this.bg.setAlpha(0.75);
-    const newhorizonsline = this.add.line(0, 0, 0, 50, 42, 92, 0xffffff);
+    const timeline = this.add.line(0, 0, -50, -50, 0, 0, 0xffffff);
+    timeline.setOrigin(0);
+    const timetext = this.add.text(0, 4, `Finish the mission
+before the time runs out
+to prevent rerouting`, {
+      fontSize: '20px',
+      fontFamily: 'font2',
+      align: 'center',
+      lineSpacing: 8,
+    });
+    timetext.setOrigin(0.5, 0);
+    this.timehint = this.add.container(680, 126, [
+      timeline,
+      timetext,
+    ]);
+    const newhorizonsline = this.add.line(0, 0, 120, 154, 170, 204, 0xffffff);
     newhorizonsline.setOrigin(0);
-    const newhorizonstext = this.add.text(0, 0, `Control the New Horizons
+    const newhorizonstext = this.add.text(170, 210, `Control New Horizons
 with WASD or arrows
 to evade the asteroids`, {
       fontSize: '20px',
@@ -39,7 +55,7 @@ to evade the asteroids`, {
       align: 'center',
       lineSpacing: 8,
     });
-    newhorizonstext.setOrigin(0.5);
+    newhorizonstext.setOrigin(0.5, 0);
     this.newhorizonshint = this.add.container(430, 166, [
       newhorizonsline,
       newhorizonstext,
@@ -106,6 +122,7 @@ for science and stars`, {
     replay.once('click', () => {
       this.scene.stop('LevelScene');
       const levels = this.cache.json.get('levels');
+      Profile.timeleft = Profile.time * 60000;
       this.scene.start('LevelScene', {
         level: data.level,
         map: new AsteroidMap(levels[data.level]),
@@ -116,6 +133,7 @@ for science and stars`, {
       event.preventDefault();
       this.scene.stop('LevelScene');
       const levels = this.cache.json.get('levels');
+      Profile.timeleft = Profile.time * 60000;
       this.scene.start('LevelScene', {
         level: data.level,
         map: new AsteroidMap(levels[data.level]),
@@ -127,6 +145,7 @@ for science and stars`, {
       this.bg,
       this.newhorizonshint,
       photoshint,
+      this.timehint,
       buttons,
     ]);
     this.open();
@@ -168,6 +187,7 @@ for science and stars`, {
     this.maskgraphics.fillCircle(newhorizons.x + 24, newhorizons.y + 24, 50);
     this.maskgraphics.fillCircle(0, 64, 200);
     this.maskgraphics.fillCircle(70, 506, 70);
+    this.maskgraphics.fillCircle(512, -85, 200);
     this.bg.mask = this.maskgraphics.createGeometryMask();
     this.bg.mask.setInvertAlpha();
     this.newhorizonshint.x = newhorizons.x - 58;

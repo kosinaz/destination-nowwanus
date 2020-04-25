@@ -1,4 +1,5 @@
 import Profile from './profile.js';
+import AsteroidMap from './asteroidMap.js';
 
 /**
  * Represent the home screen of the game.
@@ -82,7 +83,16 @@ export default class LevelScene extends Phaser.Scene {
     this.asteroids = this.physics.add.group();
     this.physics.add.overlap(this.newhorizons, this.asteroids, () => {
       if (!Profile.invincible) {
-        this.scene.restart();
+        if (Profile.timeleft < 100) {
+          const levels = this.cache.json.get('levels');
+          Profile.timeleft = Profile.time * 60000;
+          this.scene.start('LevelScene', {
+            level: data.level,
+            map: new AsteroidMap(levels[data.level]),
+          });
+        } else {
+          this.scene.restart();
+        }
       }
     });
     this.physics.add.overlap(this.focus, this.asteroids, (focus, asteroid) => {
@@ -112,6 +122,21 @@ export default class LevelScene extends Phaser.Scene {
       delay: 17000,
       callback: () => {
         this.cameras.main.fadeOut(300);
+      },
+    });
+    this.time.addEvent({
+      delay: 100,
+      loop: -1,
+      callback: () => {
+        if (Profile.timeleft < 100) {
+          return;
+        }
+        Profile.timeleft -= 100,
+        this.timebar.x = ~~(--Profile.timeleft / 60000 * 206 - 206);
+        const minutes = ~~(Profile.timeleft / 60000);
+        const seconds = ~~((Profile.timeleft % 60000) / 1000);
+        this.timecounter.text =
+          minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
       },
     });
     this.input.keyboard.on('keydown-ENTER', (event) => {
@@ -176,6 +201,27 @@ export default class LevelScene extends Phaser.Scene {
     this.progressbar.mask =
       new Phaser.Display.Masks.BitmapMask(this, this.progressmask);
     this.progresscounter.setOrigin(1, 0.5);
+    const timeborder = this.add.image(0, 0, 'sprites', 'timeborder');
+    this.timebar = this.add.image(
+        Profile.timeleft / 60000 * 206 - 206, 0, 'sprites', 'timebar'
+    );
+    this.timecounter = this.add.text(0, 12, '', {
+      fontSize: '24px',
+      fontFamily: 'font',
+    });
+    const minutes = ~~(Profile.timeleft / 60000);
+    const seconds = ~~((Profile.timeleft % 60000) / 1000);
+    this.timecounter.text = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    this.timecounter.setOrigin(0.5);
+    this.add.container(512, 48, [
+      timeborder,
+      this.timebar,
+      this.timecounter,
+    ]);
+    this.timemask = this.add.image(512, 48, 'sprites', 'timebar');
+    this.timemask.visible = false;
+    this.timebar.mask =
+      new Phaser.Display.Masks.BitmapMask(this, this.timemask);
   }
 
   /**
