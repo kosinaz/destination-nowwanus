@@ -30,6 +30,7 @@ export default class MenuScene extends Phaser.Scene {
     const levels = this.cache.json.get('levels');
     this.scene.get('MusicScene').play(0);
     this.scene.run('SelectScene', data);
+    this.scene.run('UpgradeScene');
     this.scene.run('InfoScene');
     const windowbg = this.add.image(0, 0, 'sprites', 'window');
     const title = this.add.text(0, -184, 'Mission ' + (data.level + 1), {
@@ -136,8 +137,9 @@ export default class MenuScene extends Phaser.Scene {
         level: data.level,
         map: new AsteroidMap(levels[data.level]),
       });
-      this.scene.stop('InfoScene');
       this.scene.stop('SelectScene');
+      this.scene.stop('UpgradeScene');
+      this.scene.stop('InfoScene');
       this.scene.stop();
     });
     if (data.science) {
