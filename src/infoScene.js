@@ -54,12 +54,12 @@ export default class InfoScene extends Phaser.Scene {
 `location 
 predictions based on the space dust analytics of the VBSDC subsystem.
 
-  You also have take valuable pictures of the asteroids with the Ralph
+  You also have to take valuable pictures of the asteroids with the Ralph
 to keep us funded and let us invest in different research projects.
 
   Better ways to use the RTG will grant us more power to take pictures,
 better image compression for the Ralph will give us bigger pictures,
-and better analytics for the VBSDC will let us notice the asteroid earlier,
+and better analytics for the VBSDC will let us notice the asteroids earlier,
 providing us more time to find a way through them.`, {
           fontSize: '16px',
           fontFamily: 'font2',
