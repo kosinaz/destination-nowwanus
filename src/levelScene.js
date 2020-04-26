@@ -337,49 +337,50 @@ export default class LevelScene extends Phaser.Scene {
     const frame =
       ['asteroidright', 'asteroiddown', 'asteroidleft', 'asteroidup'][d];
     const asteroid = this.add.image(0, 0, 'sprites', frame);
-    const infocus = this.add.graphics();
-    infocus.lineStyle(3, 0xffff00, 0.5);
-    infocus.beginPath();
-    infocus.moveTo(0, -16);
-    infocus.lineTo(0, -24);
-    infocus.moveTo(0, 16);
-    infocus.lineTo(0, 24);
-    infocus.moveTo(-16, 0);
-    infocus.lineTo(-24, 0);
-    infocus.moveTo(16, 0);
-    infocus.lineTo(24, 0);
-    infocus.closePath();
-    infocus.strokePath();
-    infocus.strokeCircle(0, 0, 20);
-    const outoffocus = this.add.graphics();
-    outoffocus.lineStyle(3, 0xffffff, 0.5);
-    outoffocus.beginPath();
-    outoffocus.arc(
-        // eslint-disable-next-line new-cap
-        0, 0, 40, Phaser.Math.DegToRad(30), Phaser.Math.DegToRad(60),
-    );
-    outoffocus.strokePath();
-    outoffocus.beginPath();
-    // eslint-disable-next-line new-cap
-    outoffocus.arc(
-        // eslint-disable-next-line new-cap
-        0, 0, 40, Phaser.Math.DegToRad(120), Phaser.Math.DegToRad(150),
-    );
-    outoffocus.strokePath();
-    outoffocus.beginPath();
-    // eslint-disable-next-line new-cap
-    outoffocus.arc(
-        // eslint-disable-next-line new-cap
-        0, 0, 40, Phaser.Math.DegToRad(210), Phaser.Math.DegToRad(240),
-    );
-    outoffocus.strokePath();
-    outoffocus.beginPath();
-    // eslint-disable-next-line new-cap
-    outoffocus.arc(
-        // eslint-disable-next-line new-cap
-        0, 0, 40, Phaser.Math.DegToRad(300), Phaser.Math.DegToRad(330),
-    );
-    outoffocus.strokePath();
+    const infocus = this.add.image(0, 0, 'sprites', 'infocus');
+    const outoffocus = this.add.image(0, 0, 'sprites', 'outoffocus');
+    // infocus.lineStyle(3, 0xffff00, 0.5);
+    // infocus.beginPath();
+    // infocus.moveTo(0, -16);
+    // infocus.lineTo(0, -24);
+    // infocus.moveTo(0, 16);
+    // infocus.lineTo(0, 24);
+    // infocus.moveTo(-16, 0);
+    // infocus.lineTo(-24, 0);
+    // infocus.moveTo(16, 0);
+    // infocus.lineTo(24, 0);
+    // infocus.closePath();
+    // infocus.strokePath();
+    // infocus.strokeCircle(0, 0, 20);
+    // const outoffocus = this.add.graphics();
+    // outoffocus.lineStyle(3, 0xffffff, 0.5);
+    // outoffocus.beginPath();
+    // outoffocus.arc(
+    //     // eslint-disable-next-line new-cap
+    //     0, 0, 40, Phaser.Math.DegToRad(30), Phaser.Math.DegToRad(60),
+    // );
+    // outoffocus.strokePath();
+    // outoffocus.beginPath();
+    // // eslint-disable-next-line new-cap
+    // outoffocus.arc(
+    //     // eslint-disable-next-line new-cap
+    //     0, 0, 40, Phaser.Math.DegToRad(120), Phaser.Math.DegToRad(150),
+    // );
+    // outoffocus.strokePath();
+    // outoffocus.beginPath();
+    // // eslint-disable-next-line new-cap
+    // outoffocus.arc(
+    //     // eslint-disable-next-line new-cap
+    //     0, 0, 40, Phaser.Math.DegToRad(210), Phaser.Math.DegToRad(240),
+    // );
+    // outoffocus.strokePath();
+    // outoffocus.beginPath();
+    // // eslint-disable-next-line new-cap
+    // outoffocus.arc(
+    //     // eslint-disable-next-line new-cap
+    //     0, 0, 40, Phaser.Math.DegToRad(300), Phaser.Math.DegToRad(330),
+    // );
+    // outoffocus.strokePath();
     this.tweens.add({
       targets: [outoffocus, infocus],
       angle: 90,
@@ -388,7 +389,7 @@ export default class LevelScene extends Phaser.Scene {
     infocus.visible = false;
     outoffocus.visible = false;
     const asteroidcontainer =
-      this.add.container(x, y, [asteroid, outoffocus, infocus]);
+      this.add.container(x, y, [asteroid, infocus, outoffocus]);
     this.physics.world.enable(asteroidcontainer);
     asteroidcontainer.body.setCircle(32, -32, -32);
     this.asteroids.add(asteroidcontainer);

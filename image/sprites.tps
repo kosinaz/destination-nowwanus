@@ -323,6 +323,25 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">sprites/infocus.png</key>
+            <key type="filename">sprites/outoffocus.png</key>
+            <key type="filename">sprites/pausewindow.png</key>
+            <key type="filename">sprites/star.png</key>
+            <key type="filename">sprites/staron.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>24,24,48,48</rect>
+                <key>scale9Paddings</key>
+                <rect>24,24,48,48</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">sprites/lock.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -395,23 +414,6 @@
                 <rect>256,124,512,248</rect>
                 <key>scale9Paddings</key>
                 <rect>256,124,512,248</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">sprites/pausewindow.png</key>
-            <key type="filename">sprites/star.png</key>
-            <key type="filename">sprites/staron.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>24,24,48,48</rect>
-                <key>scale9Paddings</key>
-                <rect>24,24,48,48</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
