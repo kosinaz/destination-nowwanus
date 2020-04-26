@@ -20,11 +20,9 @@ export default class UpgradeScene extends Phaser.Scene {
   /**
    * Creates the content of the UpgradeScene.
    *
-   * @param {*} data
    * @memberof UpgradeScene
    */
-  create(data) {
-    // ★ 🡆
+  create() {
     let opened = false;
     this.add.image(88, 536, 'sprites', 'starcounter');
     const starcounter = this.add.text(110, 536, Profile.star + '★', {
@@ -173,5 +171,14 @@ export default class UpgradeScene extends Phaser.Scene {
       vbsdc,
     ]);
     window.visible = false;
+    if (Profile.star > 0) {
+      window.visible = true;
+      opened = true;
+      this.tweens.add({
+        duration: 50,
+        targets: window,
+        x: 120,
+      });
+    }
   }
 }
