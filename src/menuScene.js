@@ -183,6 +183,9 @@ export default class MenuScene extends Phaser.Scene {
           ease: 'Back',
         });
       }
+      localStorage.setItem('progress', Profile.progress);
+      localStorage.setItem('star', Profile.star);
+      localStorage.setItem('level' + data.level, Profile.level[data.level]);
     }
     const buttons = this.add.container(0, 224, [play]);
     if (data.level > 0) {

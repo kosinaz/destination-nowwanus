@@ -75,6 +75,8 @@ export default class UpgradeScene extends Phaser.Scene {
       }
       Profile.star -= Profile.range;
       Profile.range += 1;
+      localStorage.setItem('star', Profile.star);
+      localStorage.setItem('range', Profile.range);
       starcounter.text = Profile.star + '★';
       if (Profile.range === 6) {
         ralphtext.text = 'MAX';
@@ -110,6 +112,8 @@ export default class UpgradeScene extends Phaser.Scene {
       }
       Profile.star -= Profile.photo;
       Profile.photo += 1;
+      localStorage.setItem('star', Profile.star);
+      localStorage.setItem('photo', Profile.photo);
       starcounter.text = Profile.star + '★';
       if (Profile.photo === 6) {
         rtgtext.text = 'MAX';
@@ -145,6 +149,8 @@ export default class UpgradeScene extends Phaser.Scene {
       }
       Profile.star -= Profile.time;
       Profile.time += 1;
+      localStorage.setItem('star', Profile.star);
+      localStorage.setItem('time', Profile.time);
       starcounter.text = Profile.star + '★';
       if (Profile.time === 6) {
         vbsdctext.text = 'MAX';

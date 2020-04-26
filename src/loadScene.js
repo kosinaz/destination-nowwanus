@@ -1,3 +1,5 @@
+import Profile from './profile.js';
+
 /**
  * Represent the load screen of the game.
  *
@@ -67,6 +69,14 @@ export default class LoadScene extends Phaser.Scene {
    * @memberof LoadScene
    */
   create() {
+    Profile.star = parseInt(localStorage.getItem('star')) || 0;
+    Profile.progress = parseInt(localStorage.getItem('progress')) || 0;
+    Profile.range = parseInt(localStorage.getItem('range')) || 1;
+    Profile.photo = parseInt(localStorage.getItem('photo')) || 1;
+    Profile.time = parseInt(localStorage.getItem('time')) || 1;
+    for (let i = 0; i < 15; i += 1) {
+      Profile.level[i] = parseInt(localStorage.getItem('level' + i));
+    }
     this.scene.start('TitleScene');
   }
 }
